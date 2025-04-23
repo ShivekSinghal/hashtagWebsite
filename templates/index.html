@@ -9,7 +9,7 @@
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="../static/img/favicon.png" rel="icon">
+  <link href="../static/img/pink.png" rel="icon">
   <link href="../static/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
@@ -34,6 +34,51 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+<style>
+  #iframeModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #iframeContainer {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  #iframeContainer iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1;
+  }
+</style>
+
 </head>
 
 <body class="index-page">
@@ -44,7 +89,10 @@
       <a href="index.html" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">Bootslander</h1>
+        <h1 class="sitename" style="height: 120px; display: flex; align-items: center;">
+  <img src="../static/img/hashtaglogo.png" alt="Logo" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+</h1>
+
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -53,7 +101,29 @@
 
           <li><a href="#pricing">Pricing</a></li>
 
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQs</a></li>
+          <li class="dropdown"><a href="#"><span>Studio Schedule</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+
+<!--              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>-->
+<!--                <ul>-->
+<!--                  <li><a href="#">Deep Dropdown 1</a></li>-->
+<!--                  <li><a href="#">Deep Dropdown 2</a></li>-->
+<!--                  <li><a href="#">Deep Dropdown 3</a></li>-->
+<!--                  <li><a href="#">Deep Dropdown 4</a></li>-->
+<!--                  <li><a href="#">Deep Dropdown 5</a></li>-->
+<!--                </ul>-->
+<!--              </li>-->
+              <li><a href="../static/img/Noida.png" download>Noida</a></li>
+              <li><a href="../static/img/RG.png" download>Rajouri Garden</a></li>
+              <li><a href="../static/img/Preet Vihar.png" download>East Delhi</a></li>
+              <li><a href="../static/img/Pitampura.png" download>Pitampura</a></li>
+              <li><a href="../static/img/Gurgaon.png" download>Gurgaon</a></li>
+              <li><a href="../static/img/Indirapuram.png" download>Indirapuram</a></li>
+              <li><a href="../static/img/Saket.png" download>South Delhi</a></li>
+              <li><a href="../static/img/Ramagya.png" download>Noida Sector 50 (Ramagya)</a></li>
+            </ul>
+          </li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -65,20 +135,21 @@
 
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
-      <img src="assets/img/hero-bg-2.jpg" alt="" class="hero-bg">
+      <img src="assets/img/hashtaglogo.png" alt="Logo" class="hero-bg">
 
       <div class="container">
         <div class="row gy-4 justify-content-between">
-          <div class="col-lg-4 order-lg-last hero-img" data-aos="zoom-out" data-aos-delay="100">
-            <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+          <div style="justify-content:center;align-items:center;display: flex;" class="col-lg-4 order-lg-last hero-img" data-aos="zoom-out" data-aos-delay="100">
+            <div></div>
+            <iframe width="408" height="240" src="https://www.youtube.com/embed/h7qtzf0EL6c?si=fzyzHOCEJMyaY0Nw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </div>
 
           <div class="col-lg-6  d-flex flex-column justify-content-center" data-aos="fade-in">
-            <h1>Build Your Landing Page With <span>Bootslander</span></h1>
-            <p>We are team of talented designers making websites with Bootstrap</p>
+            <h1>Start your dance journey with<span> Hashtag</span></h1>
+            <p>Dance for a cause</p>
             <div class="d-flex">
-              <a href="#about" class="btn-get-started">Get Started</a>
-              <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+              <a href="#" class="cta-btn" onclick="openIframe()">Get Started</a>
+              <a href="https://www.youtube.com/watch?v=h7qtzf0EL6c" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
             </div>
           </div>
 
@@ -104,81 +175,169 @@
 
 
     <!-- Pricing Section -->
-    <section id="pricing" class="pricing section">
+<!--    <section id="pricing" class="pricing section">-->
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Pricing</h2>
-        <div><span>Check Our</span> <span class="description-title">Pricing</span></div>
-      </div><!-- End Section Title -->
+<!--      &lt;!&ndash; Section Title &ndash;&gt;-->
+<!--      <div class="container section-title" data-aos="fade-up">-->
+<!--        <h2>Pricing</h2>-->
+<!--        <div><span>Check Our</span> <span class="description-title">Pricing</span></div>-->
+<!--      </div>&lt;!&ndash; End Section Title &ndash;&gt;-->
 
-      <div class="container">
+<!--      <div class="container">-->
 
-        <div class="row gy-4">
+<!--        <div class="row gy-4">-->
 
-          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
-            <div class="pricing-item">
-              <h3>Free Plan</h3>
-              <p class="description">Ullam mollitia quasi nobis soluta in voluptatum et sint palora dex strater</p>
-              <h4><sup>$</sup>0<span> / month</span></h4>
-              <a href="#" class="cta-btn">Start a free trial</a>
-              <p class="text-center small">No credit card required</p>
-              <ul>
-                <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
-                <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-                <li class="na"><i class="bi bi-x"></i> <span>Voluptate id voluptas qui sed aperiam rerum</span></li>
-                <li class="na"><i class="bi bi-x"></i> <span>Iure nihil dolores recusandae odit voluptatibus</span></li>
-              </ul>
-            </div>
-          </div><!-- End Pricing Item -->
+<!--          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">-->
+<!--            <div class="pricing-item">-->
+<!--              <h3>Drop In</h3>-->
+<!--              <p class="description">Try out a class in a studio near you</p>-->
+<!--              <h4><sup>₹</sup>720<span> / class</span></h4>-->
+<!--              <a href="#" class="cta-btn">Try out a class</a>-->
+<!--&lt;!&ndash;              <p class="text-center small">No credit card required</p>&ndash;&gt;-->
+<!--              <ul>-->
+<!--                <li><i class="bi bi-check"></i> <span>Try out a single class</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Adjustable Drop In Fee</span></li>-->
+<!--                <li class="na"><i class="bi bi-x"></i> <span>Private sessions</span></li>-->
+<!--                <li class="na"><i class="bi bi-x"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
+<!--                <li class="na"><i class="bi bi-x"></i> <span>Shoots every month.</span></li>-->
+<!--                <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>-->
 
-          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
-            <div class="pricing-item featured">
-              <p class="popular">Popular</p>
-              <h3>Business Plan</h3>
-              <p class="description">Ullam mollitia quasi nobis soluta in voluptatum et sint palora dex strater</p>
-              <h4><sup>$</sup>29<span> / month</span></h4>
-              <a href="#" class="cta-btn">Start a free trial</a>
-              <p class="text-center small">No credit card required</p>
-              <ul>
-                <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
-                <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-                <li><i class="bi bi-check"></i> <span>Voluptate id voluptas qui sed aperiam rerum</span></li>
-                <li class="na"><i class="bi bi-x"></i> <span>Iure nihil dolores recusandae odit voluptatibus</span></li>
-              </ul>
-            </div>
-          </div><!-- End Pricing Item -->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </div>&lt;!&ndash; End Pricing Item &ndash;&gt;-->
 
-          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">
-            <div class="pricing-item">
-              <h3>Developer Plan</h3>
-              <p class="description">Ullam mollitia quasi nobis soluta in voluptatum et sint palora dex strater</p>
-              <h4><sup>$</sup>49<span> / month</span></h4>
-              <a href="#" class="cta-btn">Start a free trial</a>
-              <p class="text-center small">No credit card required</p>
-              <ul>
-                <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
-                <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
-                <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
-                <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
-                <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
-                <li><i class="bi bi-check"></i> <span>Voluptate id voluptas qui sed aperiam rerum</span></li>
-                <li><i class="bi bi-check"></i> <span>Iure nihil dolores recusandae odit voluptatibus</span></li>
-              </ul>
-            </div>
-          </div><!-- End Pricing Item -->
+<!--          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">-->
+<!--            <div class="pricing-item featured">-->
+<!--              <p class="popular">Popular</p>-->
+<!--              <h3>#Grid Intensive</h3>-->
+<!--              <p class="description">Train and perform on stage</p>-->
+<!--              <h4><sup>₹</sup>3733<span> / month</span></h4>-->
+<!--              <a href="#" class="cta-btn" onclick="openIframe()">Start Regular Classes</a>-->
+<!--              <p class="text-center small">*Charged Quaterly</p>-->
+<!--              <div id="iframeModal">-->
+<!--                <div id="iframeContainer">-->
+<!--                  <button class="closeBtn" onclick="closeIframe()">×</button>-->
+<!--                  <iframe src="https://example.com"></iframe>-->
+<!--                </div>-->
+<!--              </div>-->
 
+<!--              <ul>-->
+<!--                <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Private sessions</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>-->
+<!--                <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </div>&lt;!&ndash; End Pricing Item &ndash;&gt;-->
+
+<!--          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">-->
+<!--            <div class="pricing-item">-->
+<!--              <h3>6 Month Intensive</h3>-->
+<!--              <p class="description">Intensive training for 6 months</p>-->
+<!--              <h4><sup>₹</sup>3333<span> / month</span></h4>-->
+<!--              <a href="#" class="cta-btn">Start regular training</a>-->
+<!--              <p class="text-center small">Charged together</p>-->
+<!--              <ul>-->
+<!--                <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Private sessions</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>-->
+<!--                <li><i class="bi bi-check"></i> <span>Personalised Growth Plan</span></li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </div>&lt;!&ndash; End Pricing Item &ndash;&gt;-->
+
+<!--        </div>-->
+
+<!--      </div>-->
+
+<!--    </section>&lt;!&ndash; /Pricing Section &ndash;&gt;-->
+
+    <!-- Pricing Section (Your Current HTML - Modified with modal trigger and modal moved outside) -->
+<section id="pricing" class="pricing section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Pricing</h2>
+    <div><span>Check Our</span> <span class="description-title">Pricing</span></div>
+  </div>
+
+  <div class="container">
+    <div class="row gy-4">
+
+      <!-- Drop In -->
+      <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="pricing-item">
+          <h3>Drop In</h3>
+          <p class="description">Try out a class in a studio near you</p>
+          <h4><sup>₹</sup>720<span> / class</span></h4>
+          <a href="#" class="cta-btn" onclick="openIframe()">Try out a class</a>
+          <ul>
+            <li><i class="bi bi-check"></i> <span>Try out a single class</span></li>
+            <li><i class="bi bi-check"></i> <span>Adjustable Drop In Fee</span></li>
+            <li class="na"><i class="bi bi-x"></i> <span>Private sessions</span></li>
+            <li class="na"><i class="bi bi-x"></i> <span>Mentoring by a professional dancer/teacher</span></li>
+            <li class="na"><i class="bi bi-x"></i> <span>Shoots every month.</span></li>
+            <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>
+          </ul>
         </div>
-
       </div>
 
-    </section><!-- /Pricing Section -->
+      <!-- Grid Intensive -->
+      <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="pricing-item featured">
+          <p class="popular">Popular</p>
+          <h3>#Grid Intensive</h3>
+          <p class="description">Train and perform on stage</p>
+          <h4><sup>₹</sup>16,200<span> 14 Weeks Training</span></h4>
+          <a href="#" class="cta-btn" onclick="openIframe()">Start Regular Classes</a>
+<!--          <p class="text-center small">*Charged Quarterly</p>-->
+          <ul>
+            <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>
+            <li><i class="bi bi-check"></i> <span>Private sessions</span></li>
+            <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>
+            <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>
+            <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>
+            <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>
+            <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6 Month Intensive -->
+      <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="pricing-item">
+          <h3>6 Month Intensive</h3>
+          <p class="description">Intensive training for 6 months</p>
+          <h4><sup>₹</sup>25,000<span> 6 months training</span></h4>
+          <a href="#" class="cta-btn" onclick="openIframe()">Start Regular Classes</a>
+<!--          <p class="text-center small">Charged together</p>-->
+          <ul>
+            <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>
+            <li><i class="bi bi-check"></i> <span>Private sessions</span></li>
+            <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>
+            <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>
+            <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>
+            <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>
+            <li><i class="bi bi-check"></i> <span>Personalised Growth Plan</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Iframe Modal (placed outside section) -->
+<div id="iframeModal">
+  <div id="iframeContainer">
+    <button class="closeBtn" onclick="closeIframe()">×</button>
+    <iframe src="https://rzp.io/l/pDfeGSjmQ1"></iframe>
+  </div>
+</div>
 
     <!-- Faq Section -->
     <section id="faq" class="faq section light-background">
@@ -200,27 +359,27 @@
 
               <div class="faq-item faq-active">
                 <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Non consectetur a erat nam at lectus urna duis?</h3>
+                <h3>Are the classes suitable for beginners?</h3>
                 <div class="faq-content">
-                  <p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.</p>
+                  <p>Yes! All our classes are beginner-friendly. You don't need any prior dance experience—just the enthusiasm to learn and have fun.</p>
                 </div>
                 <i class="faq-toggle bi bi-chevron-right"></i>
               </div><!-- End Faq item-->
 
               <div class="faq-item">
                 <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque?</h3>
+                <h3>What styles of dance do you offer?</h3>
                 <div class="faq-content">
-                  <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+                  <p>We offer Jazz, Ballet, Modern Contemporary, Hip Hop, Heels, Kids Jazz, and Kids Ballet at our various studios across Delhi NCR.</p>
                 </div>
                 <i class="faq-toggle bi bi-chevron-right"></i>
               </div><!-- End Faq item-->
 
               <div class="faq-item">
                 <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Dolor sit amet consectetur adipiscing elit pellentesque?</h3>
+                <h3>Can I try a class before signing up for the full course?</h3>
                 <div class="faq-content">
-                  <p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis</p>
+                  <p>Absolutely! We offer paid drop-in classes so you can experience the vibe before committing to a full batch.</p>
                 </div>
                 <i class="faq-toggle bi bi-chevron-right"></i>
               </div><!-- End Faq item-->
@@ -230,7 +389,7 @@
           </div>
 
           <div class="col-lg-5 order-1 order-lg-2">
-            <img src="assets/img/faq.jpg" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
+            <img src="static/img/faq.jpg" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
           </div>
         </div>
 
@@ -239,78 +398,78 @@
     </section><!-- /Faq Section -->
 
     <!-- Contact Section -->
-    <section id="contact" class="contact section">
+<!--    <section id="contact" class="contact section">-->
 
       <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Contact</h2>
-        <div><span>Check Our</span> <span class="description-title">Contact</span></div>
-      </div><!-- End Section Title -->
+<!--      <div class="container section-title" data-aos="fade-up">-->
+<!--        <h2>Contact</h2>-->
+<!--        <div><span>Check Our</span> <span class="description-title">Contact</span></div>-->
+<!--      </div>&lt;!&ndash; End Section Title &ndash;&gt;-->
 
       <div class="container" data-aos="fade" data-aos-delay="100">
 
-        <div class="row gy-4">
+<!--        <div class="row gy-4">-->
 
-          <div class="col-lg-4">
-            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
-              <i class="bi bi-geo-alt flex-shrink-0"></i>
-              <div>
-                <h3>Address</h3>
-                <p>A108 Adam Street, New York, NY 535022</p>
-              </div>
-            </div><!-- End Info Item -->
+<!--          <div class="col-lg-4">-->
+<!--            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">-->
+<!--              <i class="bi bi-geo-alt flex-shrink-0"></i>-->
+<!--              <div>-->
+<!--                <h3>Address</h3>-->
+<!--                <p>A 242, Sector 43 Noida 201301</p>-->
+<!--              </div>-->
+<!--            </div>&lt;!&ndash; End Info Item &ndash;&gt;-->
 
-            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
-              <i class="bi bi-telephone flex-shrink-0"></i>
-              <div>
-                <h3>Call Us</h3>
-                <p>+1 5589 55488 55</p>
-              </div>
-            </div><!-- End Info Item -->
+<!--            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">-->
+<!--              <i class="bi bi-telephone flex-shrink-0"></i>-->
+<!--              <div>-->
+<!--                <h3>Call Us</h3>-->
+<!--                <p>+91 9205488417</p>-->
+<!--              </div>-->
+<!--            </div>&lt;!&ndash; End Info Item &ndash;&gt;-->
 
-            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
-              <i class="bi bi-envelope flex-shrink-0"></i>
-              <div>
-                <h3>Email Us</h3>
-                <p>info@example.com</p>
-              </div>
-            </div><!-- End Info Item -->
+<!--            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">-->
+<!--              <i class="bi bi-envelope flex-shrink-0"></i>-->
+<!--              <div>-->
+<!--                <h3>Email Us</h3>-->
+<!--                <p>info@example.com</p>-->
+<!--              </div>-->
+<!--            </div>&lt;!&ndash; End Info Item &ndash;&gt;-->
 
-          </div>
+<!--          </div>-->
 
-          <div class="col-lg-8">
-            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-              <div class="row gy-4">
+<!--          <div class="col-lg-8">-->
+<!--            <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">-->
+<!--              <div class="row gy-4">-->
 
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                </div>
+<!--                <div class="col-md-6">-->
+<!--                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">-->
+<!--                </div>-->
 
-                <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                </div>
+<!--                <div class="col-md-6 ">-->
+<!--                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">-->
+<!--                </div>-->
 
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                </div>
+<!--                <div class="col-md-12">-->
+<!--                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">-->
+<!--                </div>-->
 
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                </div>
+<!--                <div class="col-md-12">-->
+<!--                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>-->
+<!--                </div>-->
 
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
+<!--                <div class="col-md-12 text-center">-->
+<!--                  <div class="loading">Loading</div>-->
+<!--                  <div class="error-message"></div>-->
+<!--                  <div class="sent-message">Your message has been sent. Thank you!</div>-->
 
-                  <button type="submit">Send Message</button>
-                </div>
+<!--                  <button type="submit">Send Message</button>-->
+<!--                </div>-->
 
-              </div>
-            </form>
-          </div><!-- End Contact Form -->
+<!--              </div>-->
+<!--            </form>-->
+<!--          </div>&lt;!&ndash; End Contact Form &ndash;&gt;-->
 
-        </div>
+<!--        </div>-->
 
       </div>
 
@@ -324,13 +483,13 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Bootslander</span>
+            <span class="sitename">Pink Grid Creations Pvt. Ltd.</span>
           </a>
           <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
+            <p>A-242 Sector 43</p>
+            <p>Noida 201301</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+91 9205488417</span></p>
+            <p><strong>Email:</strong> <span>universal@hashtag.dance</span></p>
           </div>
           <div class="social-links d-flex mt-4">
             <a href=""><i class="bi bi-twitter-x"></i></a>
@@ -354,11 +513,11 @@
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Our Services</h4>
           <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
+            <li><a href="#">Dance Classes</a></li>
+            <li><a href="#">Dance Classes for Kids and Adults</a></li>
+            <li><a href="#">Stage Performance</a></li>
+            <li><a href="#">Professional Dance Training</a></li>
+            <li><a href="#"></a></li>
           </ul>
         </div>
 
@@ -377,13 +536,13 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Bootslander</strong> <span>All Rights Reserved</span></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Pink Grid Creations Pvt. Ltd.</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+<!--        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>-->
       </div>
     </div>
 
@@ -394,6 +553,15 @@
 
   <!-- Preloader -->
   <div id="preloader"></div>
+  <script>
+  function openIframe() {
+    document.getElementById("iframeModal").style.display = "flex";
+  }
+
+  function closeIframe() {
+    document.getElementById("iframeModal").style.display = "none";
+  }
+</script>
 
   <!-- Vendor JS Files -->
   <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -407,5 +575,4 @@
   <script src="../static/js/main.js"></script>
 
 </body>
-
 </html>
