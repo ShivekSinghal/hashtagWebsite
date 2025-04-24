@@ -37,12 +37,12 @@
   ======================================================== -->
 <style>
   #iframeModal {
+  display: none; /* hide modal by default */
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.6);
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -61,6 +61,10 @@
   height: 100%;
   border: none;
 }
+  .mainIframe{
+    display:none;
+
+  }
 
   .closeBtn {
     position: absolute;
@@ -328,17 +332,20 @@
 
     </div>
   </div>
+
 </section>
 
 <!-- Iframe Modal (placed outside section) -->
-<div id="iframeModal">
-  <div id="iframeContainer">
-    <button class="closeBtn" onclick="closeIframe()">×</button>
-    <iframe src="https://rzp.io/l/pDfeGSjmQ1"
-  allow="payment *; fullscreen *"
-  sandbox="allow-same-origin allow-scripts allow-forms allow-popups" src="https://rzp.io/l/pDfeGSjmQ1"></iframe>
-  </div>
-</div>
+    <!-- Iframe Modal (placed outside section) -->
+    <div id="iframeModal" class="mainIframe">
+      <div id="iframeContainer">
+        <button class="closeBtn" onclick="closeIframe()">×</button>
+        <iframe src="./register"
+      allow="payment *; fullscreen *"
+      sandbox="allow-same-origin allow-scripts allow-forms allow-popups" src="https://rzp.io/l/pDfeGSjmQ1"></iframe>
+      </div>
+    </div>
+
 
     <!-- Faq Section -->
     <section id="faq" class="faq section light-background">
