@@ -2,13 +2,15 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime  # ⬅️ Add this
-
+import os
 app = Flask(__name__)
 
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+
 CREDS = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", SCOPE)
+
 CLIENT = gspread.authorize(CREDS)
-# SHEET = CLIENT.open("Landing Page Registrations").sheet1
+SHEET = CLIENT.open("Landing Page Registrations").sheet1
 
 @app.route("/")
 def main():
@@ -36,7 +38,7 @@ def register():
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # ⬅️ Add this
 
         # Save data to Google Sheet with timestamp
-        # SHEET.append_row([timestamp, name, phone, email, studio])  # ⬅️ Add timestamp as first column
+        SHEET.append_row([timestamp, name, phone, email, studio])  # ⬅️ Add timestamp as first column
 
         # Optional: Save to DB or do something with the data here
 
