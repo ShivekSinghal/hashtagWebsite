@@ -58,6 +58,7 @@
             <div class="mb-4">
                 <label for="studio" class="form-label">Studio:</label>
                 <select class="form-select" name="studio" required>
+                        <option selected disabled value="">Select Studio</option>
                     {% for studio in studios %}
                         <option value="{{ studio }}">{{ studio }}</option>
                     {% endfor %}

@@ -817,6 +817,32 @@ section,
   z-index: 3;
 }
 
+.container-fluid {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.sitename {
+  height: 60px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.container-fluid {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.sitename {
+  height: 60px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+
 .hero h1 {
   margin: 0 0 20px 0;
   font-size: 48px;

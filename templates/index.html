@@ -59,6 +59,7 @@
     box-sizing: border-box;
   }
 
+
   #iframeContainer iframe {
     width: 100%;
     height: 100%;
@@ -73,7 +74,7 @@
     position: absolute;
     top: 10px;
     right: 15px;
-    background: #ff007f;
+    background: #000;
     color: white;
     border: none;
     border-radius: 50%;
@@ -83,6 +84,33 @@
     cursor: pointer;
     z-index: 1;
   }
+  #main-btn {
+      display: inline-block;
+      padding: 7.85px 16.625px;
+      color: #ffffff;
+      background-color: #000000;
+      border: 1.5px solid #ff007f;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    #main-btn2 {
+      display: inline-block;
+      padding: 7.85px 16.625px;
+      color: #000;
+      background-color: #ff007f;
+      border: 1.5px solid #000;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    #main-btn:hover {
+      background-color: #ff007f;
+      color: #000000;
 </style>
 
 </head>
@@ -90,36 +118,21 @@
 <body class="index-page">
 
   <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+    <div class="container position-relative d-flex align-items-center justify-content-between" style="height: 60px;">
 
       <a href="index.html" class="logo d-flex align-items-center">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename" style="height: 120px; display: flex; align-items: center;">
-  <img src="../static/img/hashtaglogo.png" alt="Logo" style="max-height: 100%; max-width: 100%; object-fit: contain;">
-</h1>
-
+        <h1 class="sitename" style="height: 50px; display: flex; align-items: center;">
+          <img src="../static/img/hashtaglogo.png" alt="Logo" style="height: 50px; width: auto; object-fit: contain;">
+        </h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active">Home</a></li>
-
           <li><a href="#pricing">Pricing</a></li>
-
           <li><a href="#faq">FAQs</a></li>
           <li class="dropdown"><a href="#"><span>Studio Schedule</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-
-<!--              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>-->
-<!--                <ul>-->
-<!--                  <li><a href="#">Deep Dropdown 1</a></li>-->
-<!--                  <li><a href="#">Deep Dropdown 2</a></li>-->
-<!--                  <li><a href="#">Deep Dropdown 3</a></li>-->
-<!--                  <li><a href="#">Deep Dropdown 4</a></li>-->
-<!--                  <li><a href="#">Deep Dropdown 5</a></li>-->
-<!--                </ul>-->
-<!--              </li>-->
               <li><a href="../static/img/Noida.png" download>Noida</a></li>
               <li><a href="../static/img/RG.png" download>Rajouri Garden</a></li>
               <li><a href="../static/img/Preet Vihar.png" download>East Delhi</a></li>
@@ -130,7 +143,10 @@
               <li><a href="../static/img/Ramagya.png" download>Noida Sector 50 (Ramagya)</a></li>
             </ul>
           </li>
+
+          <li><a href="#" class="cta-btn" id="main-btn2" onclick="openIframe()">Get Started</a></li>
         </ul>
+
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
@@ -152,9 +168,9 @@
 
           <div class="col-lg-6  d-flex flex-column justify-content-center" data-aos="fade-in">
             <h1>Start your dance journey with<span> Hashtag</span></h1>
-            <p>Dance for a Cause</p>
+            <p></p>
             <div class="d-flex">
-              <a href="#" class="cta-btn" onclick="openIframe()">Get Started</a>
+              <a href="#" class="cta-btn" id="main-btn" onclick="openIframe()">Get Started</a>
               <a href="https://www.youtube.com/watch?v=h7qtzf0EL6c" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
             </div>
           </div>
@@ -284,7 +300,6 @@
           <ul>
             <li><i class="bi bi-check"></i> <span>Try out a single class</span></li>
             <li><i class="bi bi-check"></i> <span>Adjustable Drop In Fee</span></li>
-            <li class="na"><i class="bi bi-x"></i> <span>Private sessions</span></li>
             <li class="na"><i class="bi bi-x"></i> <span>Mentoring by a professional dancer/teacher</span></li>
             <li class="na"><i class="bi bi-x"></i> <span>Shoots every month.</span></li>
             <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>
@@ -303,12 +318,11 @@
 <!--          <p class="text-center small">*Charged Quarterly</p>-->
           <ul>
             <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>
-            <li><i class="bi bi-check"></i> <span>Private sessions</span></li>
             <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>
             <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>
             <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>
             <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>
-            <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>
+            <li><i class="bi bi-check"></i> <span>Personalised Growth Plan</span></li>
           </ul>
         </div>
       </div>
@@ -323,7 +337,6 @@
 <!--          <p class="text-center small">Charged together</p>-->
           <ul>
             <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>
-            <li><i class="bi bi-check"></i> <span>Private sessions</span></li>
             <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>
             <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>
             <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>
@@ -361,7 +374,6 @@
             <div class="content px-xl-5" data-aos="fade-up" data-aos-delay="100">
               <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
               </p>
             </div>
 
@@ -502,10 +514,9 @@
             <p><strong>Email:</strong> <span>universal@hashtag.dance</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
+
+            <a href="https://www.instagram.com/hashtagfordance?igsh=MTgyMmdvc2sxeG15cw=="><i class="bi bi-instagram"></i></a>
+            <a href="https://wa.me/919205488417?text=Hi!%20I’m%20interested%20in%20dance%20classes%20at%20Hashtag%20.%20Can%20you%20share%20the%20details%3F"><i class="bi bi-whatsapp"></i></a>
           </div>
         </div>
 
@@ -515,8 +526,8 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">About us</a></li>
             <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
+            <li><a href="{{url_for('terms_and_conditions')}}">Terms of service</a></li>
+            <li><a href="{{url_for('privacypolicy')}}">Privacy policy</a></li>
           </ul>
         </div>
 
