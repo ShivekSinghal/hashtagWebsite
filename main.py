@@ -102,6 +102,10 @@ def register_hashtag():
 def terms_and_conditions():
     return render_template("terms.html")
 
+@app.route('/cancel_refund')
+def cancel_refund():
+    return render_template("cancel_refund.html")
+
 @app.route('/privacypolicy')
 def privacypolicy():
     return render_template("privacypolicy.html")
