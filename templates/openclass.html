@@ -57,13 +57,17 @@
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
+    background: linear-gradient(135deg, #ff007f 0%, #ff69b4 100%);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 0, 127, 0.3);
   }
-
 
   #iframeContainer iframe {
     width: 100%;
     height: 100%;
     border: none;
+    border-radius: 15px;
+    background: white;
   }
 
   .mainIframe {
@@ -72,45 +76,87 @@
 
   .closeBtn {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    background: #000;
-    color: white;
+    top: 15px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #ff007f;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     font-size: 20px;
     cursor: pointer;
     z-index: 1;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
   }
+
+  .closeBtn:hover {
+    background: #ff007f;
+    color: white;
+    transform: scale(1.1);
+  }
+
   #main-btn {
-      display: inline-block;
-      padding: 7.85px 16.625px;
-      color: #ffffff;
-      background-color: #000000;
-      border: 1.5px solid #ff007f;
-      border-radius: 40px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+    display: inline-block;
+    padding: 7.85px 16.625px;
+    color: #ffffff;
+    background-color: #000000;
+    border: 1.5px solid #ff007f;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
 
-    #main-btn2 {
-      display: inline-block;
-      padding: 7.85px 16.625px;
-      color: #000;
-      background-color: #ff007f;
-      border: 1.5px solid #000;
-      border-radius: 40px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+  #main-btn2 {
+    display: inline-block;
+    padding: 7.85px 16.625px;
+    color: #000;
+    background-color: #ff007f;
+    border: 1.5px solid #000;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
 
-    #main-btn:hover {
-      background-color: #ff007f;
-      color: #000000;
+  #main-btn:hover {
+    background-color: #ff007f;
+    color: #000000;
+  }
+
+  .pricing {
+    position: relative;
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .pricing::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../static/img/pricing_background.JPG');
+    background-size: cover;
+    background-position: center;
+    opacity: 1;
+    z-index: -1;
+  }
+
+  .pricing-item {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+  }
+
+  /* Hero section video container styling */
+  .hero-img iframe {
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(255, 0, 127, 0.2);
+    background: linear-gradient(135deg, #ff007f 0%, #000000 100%);
+    padding: 3px;
+  }
 </style>
 
 </head>
@@ -167,7 +213,7 @@
           </div>
 
           <div class="col-lg-6  d-flex flex-column justify-content-center" data-aos="fade-in">
-            <h1><span>Hashtag</span></h1>
+            <h1>Try a Class This Week at Your Nearest <span>Hashtag</span> Studio </h1>
             <p></p>
             <div class="d-flex">
               <a href="#" class="cta-btn" id="main-btn" onclick="openIframe()">Get Started</a>
@@ -197,168 +243,39 @@
 
 
     <!-- Pricing Section -->
-<!--    <section id="pricing" class="pricing section">-->
-
-<!--      &lt;!&ndash; Section Title &ndash;&gt;-->
-<!--      <div class="container section-title" data-aos="fade-up">-->
-<!--        <h2>Pricing</h2>-->
-<!--        <div><span>Check Our</span> <span class="description-title">Pricing</span></div>-->
-<!--      </div>&lt;!&ndash; End Section Title &ndash;&gt;-->
-
-<!--      <div class="container">-->
-
-<!--        <div class="row gy-4">-->
-
-<!--          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">-->
-<!--            <div class="pricing-item">-->
-<!--              <h3>Drop In</h3>-->
-<!--              <p class="description">Try out a class in a studio near you</p>-->
-<!--              <h4><sup>₹</sup>720<span> / class</span></h4>-->
-<!--              <a href="#" class="cta-btn">Try out a class</a>-->
-<!--&lt;!&ndash;              <p class="text-center small">No credit card required</p>&ndash;&gt;-->
-<!--              <ul>-->
-<!--                <li><i class="bi bi-check"></i> <span>Try out a single class</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Adjustable Drop In Fee</span></li>-->
-<!--                <li class="na"><i class="bi bi-x"></i> <span>Private sessions</span></li>-->
-<!--                <li class="na"><i class="bi bi-x"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
-<!--                <li class="na"><i class="bi bi-x"></i> <span>Shoots every month.</span></li>-->
-<!--                <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>-->
-
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>&lt;!&ndash; End Pricing Item &ndash;&gt;-->
-
-<!--          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">-->
-<!--            <div class="pricing-item featured">-->
-<!--              <p class="popular">Popular</p>-->
-<!--              <h3>#Grid Intensive</h3>-->
-<!--              <p class="description">Train and perform on stage</p>-->
-<!--              <h4><sup>₹</sup>3733<span> / month</span></h4>-->
-<!--              <a href="#" class="cta-btn" onclick="openIframe()">Start Regular Classes</a>-->
-<!--              <p class="text-center small">*Charged Quaterly</p>-->
-<!--              <div id="iframeModal">-->
-<!--                <div id="iframeContainer">-->
-<!--                  <button class="closeBtn" onclick="closeIframe()">×</button>-->
-<!--                  <iframe src="https://example.com"></iframe>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              <ul>-->
-<!--                <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Private sessions</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>-->
-<!--                <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>&lt;!&ndash; End Pricing Item &ndash;&gt;-->
-
-<!--          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">-->
-<!--            <div class="pricing-item">-->
-<!--              <h3>6 Month Intensive</h3>-->
-<!--              <p class="description">Intensive training for 6 months</p>-->
-<!--              <h4><sup>₹</sup>3333<span> / month</span></h4>-->
-<!--              <a href="#" class="cta-btn">Start regular training</a>-->
-<!--              <p class="text-center small">Charged together</p>-->
-<!--              <ul>-->
-<!--                <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Private sessions</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>-->
-<!--                <li><i class="bi bi-check"></i> <span>Personalised Growth Plan</span></li>-->
-<!--              </ul>-->
-<!--            </div>-->
-<!--          </div>&lt;!&ndash; End Pricing Item &ndash;&gt;-->
-
-<!--        </div>-->
-
-<!--      </div>-->
-
-<!--    </section>&lt;!&ndash; /Pricing Section &ndash;&gt;-->
-
-    <!-- Pricing Section (Your Current HTML - Modified with modal trigger and modal moved outside) -->
-<section id="pricing" class="pricing section">
-  <div class="container section-title" data-aos="fade-up">
-    <h2>Pricing</h2>
-    <div><span>Check Our</span> <span class="description-title">Pricing</span></div>
-  </div>
-
-  <div class="container">
-    <div class="row gy-4">
-
-      <!-- Drop In -->
-<!--      <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">-->
-<!--        <div class="pricing-item">-->
-<!--          <h3>Drop </h3>-->
-<!--          <p class="description">Try out a class in a studio near you</p>-->
-<!--          <h4><sup>₹</sup>720<span> / class</span></h4>-->
-<!--          <a href="#" class="cta-btn" onclick="openIframe()">Try out a class</a>-->
-<!--          <ul>-->
-<!--            <li><i class="bi bi-check"></i> <span>Try out a single class</span></li>-->
-<!--            <li><i class="bi bi-check"></i> <span>Adjustable Drop In Fee</span></li>-->
-<!--            <li class="na"><i class="bi bi-x"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
-<!--            <li class="na"><i class="bi bi-x"></i> <span>Shoots every month.</span></li>-->
-<!--            <li class="na"><i class="bi bi-x"></i> <span>Personalised Growth Plan</span></li>-->
-<!--          </ul>-->
-<!--        </div>-->
-<!--      </div>-->
-
-      <!-- Grid Intensive -->
-      <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
-        <div class="pricing-item featured">
-          <p class="popular">Popular</p>
-          <h3>#Open Class</h3>
-          <p class="description">Train and perform on stage</p>
-          <h4><sup>₹</sup>500<span>per class</span></h4>
-          <a href="#" class="cta-btn" onclick="openIframe()">Start Regular Classes</a>
-<!--          <p class="text-center small">*Charged Quarterly</p>-->
-          <ul>
-            <li><i class="bi bi-check"></i> <span>Get Introduced to dance styles </span></li>
-            <li><i class="bi bi-check"></i> <span>Learn a beginner friendly choreography</span></li>
-            <li><i class="bi bi-check"></i> <span>Videos</span></li>
-            <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>
-            <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>
-            <li><i class="bi bi-check"></i> <span>Personalised Growth Plan</span></li>
-          </ul>
-        </div>
+    <section id="pricing" class="pricing section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Pricing</h2>
+        <div><span>Check Our</span> <span class="description-title">Pricing</span></div>
       </div>
 
-      <!-- 6 Month Intensive -->
-<!--      <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="300">-->
-<!--        <div class="pricing-item">-->
-<!--          <h3>6 Month Intensive</h3>-->
-<!--          <p class="description">Intensive training for 6 months</p>-->
-<!--          <h4><sup>₹</sup>25,000<span> 6 months training</span></h4>-->
-<!--          <a href="#" class="cta-btn" onclick="openIframe()">Start Regular Classes</a>-->
-<!--&lt;!&ndash;          <p class="text-center small">Charged together</p>&ndash;&gt;-->
-<!--          <ul>-->
-<!--            <li><i class="bi bi-check"></i> <span>Official Group classes (Twice a week)</span></li>-->
-<!--            <li><i class="bi bi-check"></i> <span>Mentoring by a professional dancer/teacher</span></li>-->
-<!--            <li><i class="bi bi-check"></i> <span>Shoots every month.</span></li>-->
-<!--            <li><i class="bi bi-check"></i> <span>Stage Performance</span></li>-->
-<!--            <li><i class="bi bi-check"></i> <span>Certificate, Costume and Complimentary Ticket</span></li>-->
-<!--            <li><i class="bi bi-check"></i> <span>Personalised Growth Plan</span></li>-->
-<!--          </ul>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6 col-md-8" data-aos="zoom-in" data-aos-delay="200">
+            <div class="pricing-item featured" style="margin: 0 auto; max-width: 500px;">
+              <p class="popular">Popular</p>
+              <h3>#Open Class</h3>
+              <p class="description">Train and perform on stage</p>
+              <h4><sup>₹</sup>720<span> per class</span></h4>
+              <a href="#" class="cta-btn" onclick="openIframe()">Register Now</a>
+              <ul>
+                <li><i class="bi bi-check"></i> <span>Introduction to a new dance style</span></li>
+                <li><i class="bi bi-check"></i> <span>Led by experienced and passionate instructors</span></li>
+                <li><i class="bi bi-check"></i> <span>Beginner-friendly concepts and choreography</span></li>
+                <li><i class="bi bi-check"></i> <span>Boost your confidence and creativity</span></li>
+                <li><i class="bi bi-check"></i> <span>Open to all age groups</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    </div>
-  </div>
-
-</section>
-
-<!-- Iframe Modal (placed outside section) -->
+    <!-- Iframe Modal (placed outside section) -->
     <div id="iframeModal">
       <div id="iframeContainer">
         <button class="closeBtn" onclick="closeIframe()">×</button>
-        <iframe width='100%' height='750px' src='https://hashtag.zohobookings.in/portal-embed#/279227000000038098' frameborder='0' allowfullscreen='' > </iframe>
-<!--        <iframe src="./register"-->
-<!--      allow="payment *; fullscreen *"-->
-<!--      sandbox="allow-same-origin allow-scripts allow-forms allow-popups" src="https://rzp.io/l/pDfeGSjmQ1"></iframe>-->
+        <iframe width='100%' height='750px' src="{{url_for('register_openclass')}}" frameborder='0' allowfullscreen='' > </iframe>
       </div>
     </div>
 
@@ -380,39 +297,105 @@
 
             <div class="faq-container px-xl-5" data-aos="fade-up" data-aos-delay="200">
 
-              <div class="faq-item faq-active">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Are the classes suitable for beginners?</h3>
-                <div class="faq-content">
-                  <p>Yes! All our classes are beginner-friendly. You don't need any prior dance experience—just the enthusiasm to learn and have fun.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
 
-              <div class="faq-item">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>What styles of dance do you offer?</h3>
-                <div class="faq-content">
-                  <p>We offer Jazz, Ballet, Modern Contemporary, Hip Hop, Heels, Kids Jazz, and Kids Ballet at our various studios across Delhi NCR.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
+  <!-- New FAQs Start Here -->
 
-              <div class="faq-item">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Can I try a class before signing up for the full course?</h3>
-                <div class="faq-content">
-                  <p>Absolutely! We offer paid drop-in classes so you can experience the vibe before committing to a full batch.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>What is an Open Class?</h3>
+    <div class="faq-content">
+      <p>An Open Class is a one-time, non-committal dance session designed for anyone who wants to explore a new style, meet our instructors, and experience the vibe of our academy.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
 
-            </div>
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>Who can attend the Open Class?</h3>
+    <div class="faq-content">
+      <p>Anyone! Whether you're a complete beginner, a dance enthusiast, or a returning student — our open classes are inclusive and beginner-friendly.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>Do I need to register in advance?</h3>
+    <div class="faq-content">
+      <p>Yes, pre-registration is required as spots are limited at each of our 8 studio locations. Just hit the “Register Now” button and choose your preferred studio.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>What is the fee for the Open Class?</h3>
+    <div class="faq-content">
+      <p>The Open Class is priced at 720/- per participant.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>What styles will be offered in the Open Class?</h3>
+    <div class="faq-content">
+      <p>Styles vary by studio, but you can expect classes in Jazz, Ballet, Modern Contemporary, Hip Hop and Heels. Full schedules are available during registration.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>What should I wear or bring?</h3>
+    <div class="faq-content">
+      <p>Wear comfortable clothes you can move in, and bring water and a small towel. Dance shoes or clean sneakers are recommended depending on the style.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>Can I bring a friend?</h3>
+    <div class="faq-content">
+      <p>Absolutely! Dancing with friends makes it more fun. Just make sure they register too.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>Will this class help me decide on joining a regular batch?</h3>
+    <div class="faq-content">
+      <p>Yes! That’s what it’s for. You’ll get a real taste of our teaching style, studio energy, and what to expect from our regular batches.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>Where are your studios located?</h3>
+    <div class="faq-content">
+      <p>We have 8 locations across Delhi NCR — Noida (Sector 43 & 50), Indirapuram, Gurgaon, South Delhi, Rajouri Garden, East Delhi & Pitampura.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+  <div class="faq-item">
+    <i class="faq-icon bi bi-question-circle"></i>
+    <h3>Who will be teaching the Open Class?</h3>
+    <div class="faq-content">
+      <p>Our certified and experienced faculty — the same amazing artists who teach our regular batches — will be leading these sessions.</p>
+    </div>
+    <i class="faq-toggle bi bi-chevron-right"></i>
+  </div><!-- End Faq item-->
+
+</div>
 
           </div>
 
           <div class="col-lg-5 order-1 order-lg-2">
-            <img src="static/img/faq.jpg" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
+            <img src="static/img/.jpg" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
           </div>
         </div>
 
@@ -423,13 +406,13 @@
     <!-- Contact Section -->
 <!--    <section id="contact" class="contact section">-->
 
-      <!-- Section Title -->
+<!--      &lt;!&ndash; Section Title &ndash;&gt;-->
 <!--      <div class="container section-title" data-aos="fade-up">-->
 <!--        <h2>Contact</h2>-->
 <!--        <div><span>Check Our</span> <span class="description-title">Contact</span></div>-->
-<!--      </div>&lt;!&ndash; End Section Title &ndash;&gt;-->
+<!--      </div>-->
 
-      <div class="container" data-aos="fade" data-aos-delay="100">
+<!--      <div class="container" data-aos="fade" data-aos-delay="100">-->
 
 <!--        <div class="row gy-4">-->
 
@@ -440,7 +423,7 @@
 <!--                <h3>Address</h3>-->
 <!--                <p>A 242, Sector 43 Noida 201301</p>-->
 <!--              </div>-->
-<!--            </div>&lt;!&ndash; End Info Item &ndash;&gt;-->
+<!--            </div>-->
 
 <!--            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">-->
 <!--              <i class="bi bi-telephone flex-shrink-0"></i>-->
@@ -448,7 +431,7 @@
 <!--                <h3>Call Us</h3>-->
 <!--                <p>+91 9205488417</p>-->
 <!--              </div>-->
-<!--            </div>&lt;!&ndash; End Info Item &ndash;&gt;-->
+<!--            </div>-->
 
 <!--            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">-->
 <!--              <i class="bi bi-envelope flex-shrink-0"></i>-->
@@ -456,7 +439,7 @@
 <!--                <h3>Email Us</h3>-->
 <!--                <p>info@example.com</p>-->
 <!--              </div>-->
-<!--            </div>&lt;!&ndash; End Info Item &ndash;&gt;-->
+<!--            </div>-->
 
 <!--          </div>-->
 
@@ -490,19 +473,20 @@
 
 <!--              </div>-->
 <!--            </form>-->
-<!--          </div>&lt;!&ndash; End Contact Form &ndash;&gt;-->
+<!--          </div>-->
 
 <!--        </div>-->
 
-      </div>
+<!--      </div>-->
 
-    </section><!-- /Contact Section -->
+<!--    </section>&lt;!&ndash; /Contact Section &ndash;&gt;-->
 
   </main>
 
   <footer id="footer" class="footer dark-background">
 
     <div class="container footer-top">
+
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
@@ -517,7 +501,7 @@
           <div class="social-links d-flex mt-4">
 
             <a href="https://www.instagram.com/hashtagfordance?igsh=MTgyMmdvc2sxeG15cw=="><i class="bi bi-instagram"></i></a>
-            <a href="https://wa.me/919205488417?text=Hi!%20I’m%20interested%20in%20dance%20classes%20at%20Hashtag%20.%20Can%20you%20share%20the%20details%3F"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://wa.me/919205488417?text=Hi!%20I'm%20interested%20in%20dance%20classes%20at%20Hashtag%20.%20Can%20you%20share%20the%20details%3F"><i class="bi bi-whatsapp"></i></a>
           </div>
         </div>
 
@@ -564,7 +548,6 @@
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-<!--        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>-->
       </div>
     </div>
 

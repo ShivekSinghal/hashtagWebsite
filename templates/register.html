@@ -2,75 +2,1412 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Studio Registration</title>
+    <title>Book A Class</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #000000;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Montserrat', sans-serif;
         }
-        .form-container {
-            max-width: 500px;
-            margin: 60px auto;
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 40px;
+            max-width: 1600px;
+            width: 90%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .content-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+        .form-container, .calendar-container, .time-slots-container {
+            flex: 1;
+            background-color: white;
             padding: 30px;
-            background-color: grey;
             border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            height: fit-content;
         }
-        .form-title {
-            color: #000000;
-            font-weight: 600;
+        .main-title {
+            color: white;
+            font-weight: 700;
+            font-size: 2.5em;
             margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .time-slots-title {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        .form-label {
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-label i {
+            color: #ff007f;
+            font-size: 1.1em;
+        }
+        .form-control, .form-select {
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 12px 15px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #ff007f;
+            box-shadow: 0 0 0 0.2rem rgba(255, 0, 127, 0.15);
+        }
+        .time-slot {
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            font-weight: 500;
+            font-size: 1.1em;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transform-origin: center;
+            user-select: none;
+            width: 100%;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .time-slot-radio {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ff007f;
+            border-radius: 50%;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .time-slot-radio:checked {
+            background-color: #ff007f;
+            border-color: #ff007f;
+        }
+        .time-slot-radio:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .time-slot:hover {
+            transform: translateY(-2px);
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-color: #ff007f;
+        }
+        .time-slot.selected {
+            background: rgba(255, 0, 127, 0.15);
+            color: #ff007f;
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 0, 127, 0.2);
+            border-color: #ff007f;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+            animation: selectedPulse 2s ease infinite;
+            backdrop-filter: blur(5px);
+        }
+        @keyframes selectedPulse {
+            0% {
+                box-shadow: 0 8px 25px rgba(255, 0, 127, 0.2);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(255, 0, 127, 0.3);
+            }
+            100% {
+                box-shadow: 0 8px 25px rgba(255, 0, 127, 0.2);
+            }
+        }
+        .time-slot.selected .time-slot-time {
+            color: #ff007f;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(255, 0, 127, 0.1);
+        }
+        .time-slot-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            padding: 0 10px;
+            width: 100%;
+        }
+        .time-slot-time {
+            flex: 1;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 1.2em;
+            padding-left: 30px;
+        }
+        .time-slot.selected .time-slot-time {
+            padding-left: 40px;
+        }
+        .time-slot-confirm {
+            position: absolute;
+            right: -120px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            width: auto;
+        }
+        .time-slot.selected .time-slot-confirm {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            right: -100px;
+        }
+        .confirm-btn {
+            background-color: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            min-width: 120px;
+            pointer-events: auto !important;
+        }
+        .confirm-btn:hover {
+            background-color: #00e67a;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
+            color: #000;
+        }
+        .confirm-btn:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 10px rgba(0, 255, 136, 0.3);
         }
         .btn-custom {
             background-color: #ff007f;
             color: white;
             font-weight: bold;
+            transition: all 0.3s ease;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            min-width: 200px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
         }
         .btn-custom:hover {
             background-color: #e60073;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.4);
         }
-        label {
+        #calendar {
+            background-color: white;
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+            background-color: #4a90e2 !important;
+            color: white !important;
+            font-weight: 600 !important;
+        }
+        .fc .fc-daygrid-day.fc-day-selected .fc-daygrid-day-number {
+            background-color: #ff007f;
+            color: white;
+        }
+        .fc .fc-button {
+            background-color: #ff007f;
+            border-color: #ff007f;
+            transition: all 0.3s ease;
+            padding: 0.4em 0.8em;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .fc .fc-button:hover {
+            background-color: #e60073;
+            border-color: #e60073;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
+        }
+        .fc .fc-daygrid-day {
+            padding: 2px;
+        }
+        .fc .fc-daygrid-day-number {
+            color: #333;
             font-weight: 500;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 2px auto;
+            transition: all 0.3s ease;
+        }
+        .fc .fc-daygrid-day:hover .fc-daygrid-day-number {
+            background-color: rgba(255, 0, 127, 0.1);
+        }
+        .fc .fc-daygrid-day.fc-day-today {
+            background-color: rgba(74, 144, 226, 0.1) !important;
+        }
+        .fc .fc-daygrid-day.fc-day-selected {
+            background-color: transparent;
+        }
+        .fc .fc-daygrid-day.fc-day-selected:hover .fc-daygrid-day-number {
+            background-color: #e60073;
+        }
+        .fc .fc-daygrid-day.fc-day-past {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .fc .fc-daygrid-day.fc-day-past .fc-daygrid-day-number {
+            color: #999 !important;
+        }
+        .fc .fc-daygrid-day.fc-day-future:hover .fc-daygrid-day-number {
+            background-color: rgba(255, 0, 127, 0.1);
+        }
+        .fc .fc-col-header-cell {
+            padding: 8px 0;
+        }
+        .fc .fc-col-header-cell-cushion {
+            color: #666;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        .fc .fc-daygrid-body {
+            width: 100% !important;
+        }
+        .fc .fc-daygrid-day-frame {
+            padding: 2px;
+        }
+        .fc .fc-scrollgrid {
+            border: none;
+        }
+        .fc .fc-scrollgrid td {
+            border: none;
+        }
+        .fc .fc-scrollgrid-section-header {
+            border: none;
+        }
+        .fc .fc-scrollgrid-section-body {
+            border: none;
+        }
+        .fc .fc-scrollgrid-section-footer {
+            border: none;
+        }
+        .fc .fc-daygrid-day-frame {
+            border: none;
+        }
+        .fc .fc-daygrid-day-events {
+            display: none;
+        }
+        .fc .fc-daygrid-more-link {
+            display: none;
+        }
+        .fc .fc-daygrid-day.fc-day-today {
+            background-color: transparent;
+        }
+        .fc .fc-daygrid-day.fc-day-selected {
+            background-color: transparent;
+        }
+        .fc .fc-daygrid-day.fc-day-selected .fc-daygrid-day-number {
+            background-color: #ff007f;
+            color: white;
+        }
+        .fc .fc-daygrid-day.fc-day-selected:hover .fc-daygrid-day-number {
+            background-color: #e60073;
+        }
+        .fc .fc-daygrid-day.fc-day-today:hover .fc-daygrid-day-number {
+            background-color: #e60073;
+        }
+        .fc .fc-daygrid-day.fc-day-past:hover .fc-daygrid-day-number {
+            background-color: rgba(153, 153, 153, 0.1);
+        }
+        .fc .fc-daygrid-day.fc-day-future:hover .fc-daygrid-day-number {
+            background-color: rgba(255, 0, 127, 0.1);
+        }
+        .time-slot.sold-out {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #999;
+            cursor: not-allowed;
+            border: 2px solid #eee;
+            position: relative;
+        }
+        .time-slot.sold-out::after {
+            content: 'Sold Out';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        .time-slot.sold-out:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #eee;
+        }
+        @media (max-width: 1400px) {
+            .main-container {
+                width: 95%;
+                padding: 40px;
+            }
+            .content-container {
+                gap: 30px;
+            }
+        }
+        @media (max-width: 1200px) {
+            .content-container {
+                flex-direction: column;
+            }
+            .form-container, .calendar-container, .time-slots-container {
+                width: 100%;
+            }
+        }
+        .btn-custom:disabled {
+            background-color: #ff007f;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .spinner-border {
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            border: 0.2em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border .75s linear infinite;
+        }
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 5px;
+            display: none;
+        }
+        /* Add new styles for calendar navigation */
+        .fc .fc-prev-button,
+        .fc .fc-next-button {
+            padding: 0.2em 0.4em !important;
+            font-size: 0.8em !important;
+            min-width: 30px !important;
+            height: 30px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .fc .fc-prev-button .fc-icon,
+        .fc .fc-next-button .fc-icon {
+            font-size: 0.8em !important;
+            vertical-align: middle !important;
+        }
+        .fc .fc-toolbar-title {
+            font-size: 1.2em !important;
+            margin: 0 0.5em !important;
+        }
+        .fc .fc-daygrid-day.fc-day-sold-out {
+            background-color: rgba(255, 0, 127, 0.1) !important;
+            position: relative;
+        }
+        .fc .fc-daygrid-day.fc-day-sold-out::after {
+            content: 'Sold Out';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 0, 127, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            z-index: 1;
+        }
+        .fc .fc-daygrid-day.fc-day-sold-out .fc-daygrid-day-number {
+            color: #ff007f !important;
+            font-weight: 600 !important;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="form-container">
-        <h2 class="form-title text-center">Registeration Form</h2>
-        <form method="POST">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" class="form-control" name="name" required>
-            </div>
+<div class="main-container">
+    <h1 class="main-title animate__animated animate__fadeInDown">Book A Class</h1>
+    
+    <div class="content-container">
+        <div class="form-container animate__animated animate__fadeInLeft">
+            <form method="POST" id="registrationForm" action="{{ url_for('register_process') }}" onsubmit="return validateForm()">
+                <div class="mb-3">
+                    <label for="name" class="form-label">
+                        <i class="fas fa-user"></i>
+                        Name
+                    </label>
+                    <input type="text" class="form-control" name="name" id="name" required>
+                    <div class="error-message" id="nameError"></div>
+                </div>
 
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone:</label>
-                <input type="text" class="form-control" name="phone" required>
-            </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">
+                        <i class="fas fa-phone"></i>
+                        Phone
+                    </label>
+                    <input type="tel" class="form-control" name="phone" id="phone" required>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" name="email" required>
-            </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Email
+                    </label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
 
-            <div class="mb-4">
-                <label for="studio" class="form-label">Studio:</label>
-                <select class="form-select" name="studio" required>
+                <div class="mb-4">
+                    <label for="studio" class="form-label">
+                        <i class="fas fa-building"></i>
+                        Studio
+                    </label>
+                    <select class="form-select" name="studio" id="studio" required>
                         <option selected disabled value="">Select Studio</option>
-                    {% for studio in studios %}
-                        <option value="{{ studio }}">{{ studio }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+                        {% for studio in studios %}
+                            <option value="{{ studio }}">{{ studio }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="error-message" id="studioError"></div>
+                </div>
 
-            <div class="d-grid">
-                <button type="submit" class="btn btn-custom">Submit</button>
+                <!-- Hidden fields for booking data -->
+                <input type="hidden" name="booking_date" id="booking_date">
+                <input type="hidden" name="booking_time" id="booking_time">
+                <input type="hidden" name="time_slot" id="time_slot">
+                <input type="hidden" name="formatted_date_time" id="formatted_date_time">
+            </form>
+        </div>
+
+        <div class="calendar-container animate__animated animate__fadeInUp">
+            <div id="calendar"></div>
+        </div>
+
+        <div class="time-slots-container animate__animated animate__fadeInRight">
+            <h3 class="time-slots-title">Available Time Slots for <span id="selected-date"></span></h3>
+            <div id="time-slots">
+                <!-- Time slots will be dynamically populated -->
             </div>
-        </form>
+        </div>
+    </div>
+
+    <div class="submit-container animate__animated animate__fadeInUp" style="text-align: center; margin-top: 30px;">
+        <button type="submit" form="registrationForm" class="btn btn-custom">Checkout</button>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<script>
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    // Check if a time slot is selected
+    const selectedTimeSlot = document.querySelector('input[name="time_slot"]:checked');
+    if (!selectedTimeSlot) {
+        alert('Please select a time slot before submitting');
+        return false;
+    }
+
+    // Get the selected studio
+    const selectedStudio = document.querySelector('select[name="studio"]').value;
+    if (!selectedStudio) {
+        alert('Please select a studio');
+        return false;
+    }
+
+    // Show loading state
+    const submitButton = document.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Processing...
+    `;
+
+    // Submit the form
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // Submit to save data
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else if (response.ok) {
+            // If no redirect, try to get the payment URL from the response
+            return response.text().then(text => {
+                const paymentUrl = STUDIO_URLS[selectedStudio];
+                if (paymentUrl) {
+                    window.location.href = paymentUrl;
+                } else {
+                    throw new Error('Invalid studio selected');
+                }
+            });
+        } else {
+            throw new Error('Failed to save registration');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Checkout';
+    });
+
+    return false;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next',
+            center: 'title',
+            right: 'today'
+        },
+        dateClick: function(info) {
+            // Check if the clicked date is in the past or in the sold out period
+            const clickedDate = new Date(info.dateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Check if date is in sold out period (June 15th to July 6th)
+            const soldOutStart = new Date('2024-06-15');
+            const soldOutEnd = new Date('2024-07-06');
+            
+            if (clickedDate < today || (clickedDate >= soldOutStart && clickedDate <= soldOutEnd)) {
+                // Show sold out message
+                const timeSlotsContainer = document.getElementById('time-slots');
+                timeSlotsContainer.innerHTML = `
+                    <div class="no-slots-message" style="text-align: center; padding: 20px; color: #666;">
+                        <i class="fas fa-calendar-times" style="font-size: 2em; margin-bottom: 10px; color: #ff007f;"></i>
+                        <p style="font-weight: 500; color: #333;">Slots Sold Out</p>
+                        <p style="font-size: 0.9em; margin-top: 5px;">Please select another date</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const selectedStudio = document.querySelector('select[name="studio"]').value;
+            if (selectedStudio) {
+                updateTimeSlots(info.dateStr, selectedStudio);
+            } else {
+                // Show message to select studio first
+                const noStudioDiv = document.createElement('div');
+                noStudioDiv.className = 'no-slots-message';
+                noStudioDiv.style.textAlign = 'center';
+                noStudioDiv.style.padding = '20px';
+                noStudioDiv.style.color = '#666';
+                noStudioDiv.innerHTML = `
+                    <i class="fas fa-exclamation-circle" style="font-size: 2em; margin-bottom: 10px;"></i>
+                    <p>Please select a studio first</p>
+                `;
+                document.getElementById('time-slots').innerHTML = '';
+                document.getElementById('time-slots').appendChild(noStudioDiv);
+            }
+            document.querySelectorAll('.fc-daygrid-day').forEach(day => {
+                day.classList.remove('fc-day-selected');
+            });
+            info.dayEl.classList.add('fc-day-selected');
+        },
+        dayCellDidMount: function(info) {
+            const date = info.date;
+            const soldOutStart = new Date('2024-06-15');
+            const soldOutEnd = new Date('2024-07-06');
+            
+            if (date >= soldOutStart && date <= soldOutEnd) {
+                info.el.classList.add('fc-day-sold-out');
+                info.el.style.pointerEvents = 'none';
+                
+                // Add sold out indicator
+                const dayNumber = info.el.querySelector('.fc-daygrid-day-number');
+                if (dayNumber) {
+                    dayNumber.style.color = '#ff007f';
+                    dayNumber.style.fontWeight = '600';
+                }
+            }
+        },
+        events: [],
+        dayMaxEvents: true,
+        height: 'auto',
+        firstDay: 1,
+        buttonText: {
+            today: 'Today'
+        },
+        fixedWeekCount: false,
+        showNonCurrentDates: false,
+        dayHeaderFormat: { weekday: 'short' },
+        validRange: {
+            start: new Date() // Disable past dates
+        }
+    });
+    calendar.render();
+
+    // Studio-specific time slots
+    const studioTimeSlots = {
+        'Noida': {
+            'Monday': [
+                { start: '15:45', end: '16:45', label: '3:45 PM - 4:45 PM', isKidsClass: true },
+                { start: '19:45', end: '21:00', label: '7:45 PM - 9:00 PM', isHeelsClass: true },
+                { start: '21:00', end: '22:15', label: '9:00 PM - 10:15 PM' }
+            ],
+            'Tuesday': [
+                { start: '16:30', end: '17:30', label: '4:30 PM - 5:30 PM', isKidsClass: true },
+                { start: '17:30', end: '18:45', label: '5:30 PM - 6:45 PM' }
+            ],
+            'Thursday': [
+                { start: '15:45', end: '16:45', label: '3:45 PM - 4:45 PM', isKidsClass: true },
+                { start: '19:45', end: '21:00', label: '7:45 PM - 9:00 PM' },
+                { start: '21:00', end: '22:15', label: '9:00 PM - 10:15 PM' }
+            ],
+            'Friday': [
+                { start: '16:30', end: '17:30', label: '4:30 PM - 5:30 PM', isKidsClass: true },
+                { start: '17:30', end: '18:45', label: '5:30 PM - 6:45 PM' }
+            ],
+            'Sunday': [
+                { start: '14:00', end: '16:30', label: '2:00 PM - 4:30 PM', isPremiumClass: true },
+                { start: '16:45', end: '19:00', label: '4:45 PM - 7:00 PM' },
+                { start: '19:00', end: '20:15', label: '7:00 PM - 8:15 PM', isHeelsClass: true }
+            ]
+        },
+        'East Delhi': {
+            'Monday': [
+                { start: '18:00', end: '19:15', label: '6:00 PM - 7:15 PM' },
+                { start: '19:15', end: '20:30', label: '7:15 PM - 8:30 PM', isHeelsClass: true }
+            ],
+            'Tuesday': [
+                { start: '17:30', end: '18:30', label: '5:30 PM - 6:30 PM', isKidsClass: true }
+            ],
+            'Thursday': [
+                { start: '18:00', end: '19:15', label: '6:00 PM - 7:15 PM' },
+                { start: '19:15', end: '20:30', label: '7:15 PM - 8:30 PM', isHeelsClass: true }
+            ],
+            'Friday': [
+                { start: '17:30', end: '18:30', label: '5:30 PM - 6:30 PM', isKidsClass: true }
+            ],
+            'Saturday': [
+                { start: '12:00', end: '13:15', label: '12:00 PM - 1:15 PM' }
+            ],
+            'Sunday': [
+                { start: '12:00', end: '13:15', label: '12:00 PM - 1:15 PM' },
+                { start: '13:15', end: '15:45', label: '1:15 PM - 3:45 PM', isPremiumClass: true }
+            ]
+        },
+        'Gurgaon': {
+            'Monday': [
+                { start: '19:15', end: '20:30', label: '7:15 PM - 8:30 PM' },
+                { start: '20:45', end: '22:00', label: '8:45 PM - 10:00 PM', isHeelsClass: true }
+            ],
+            'Tuesday': [
+                { start: '18:00', end: '19:00', label: '6:00 PM - 7:00 PM', isKidsClass: true }
+            ],
+            'Thursday': [
+                { start: '19:15', end: '20:30', label: '7:15 PM - 8:30 PM' },
+                { start: '20:45', end: '22:00', label: '8:45 PM - 10:00 PM', isHeelsClass: true }
+            ],
+            'Friday': [
+                { start: '18:00', end: '19:00', label: '6:00 PM - 7:00 PM', isKidsClass: true }
+            ],
+            'Sunday': [
+                { start: '14:30', end: '17:00', label: '2:30 PM - 5:00 PM', isPremiumClass: true },
+                { start: '17:00', end: '19:30', label: '5:00 PM - 7:30 PM', isPremiumClass: true }
+            ]
+        },
+        'Rajouri Garden': {
+            'Tuesday': [
+                { start: '16:00', end: '17:00', label: '4:00 PM - 5:00 PM', isKidsClass: true }
+            ],
+            'Wednesday': [
+                { start: '17:00', end: '18:00', label: '5:00 PM - 6:00 PM', isKidsClass: true },
+                { start: '20:00', end: '21:15', label: '8:00 PM - 9:15 PM' }
+            ],
+            'Friday': [
+                { start: '16:00', end: '17:00', label: '4:00 PM - 5:00 PM', isKidsClass: true }
+            ],
+            'Saturday': [
+                { start: '13:30', end: '14:45', label: '1:30 PM - 2:45 PM', isHeelsClass: true },
+                { start: '14:45', end: '16:00', label: '2:45 PM - 4:00 PM' },
+                { start: '17:00', end: '18:00', label: '5:00 PM - 6:00 PM', isKidsClass: true },
+                { start: '20:00', end: '21:15', label: '8:00 PM - 9:15 PM' }
+            ],
+            'Sunday': [
+                { start: '13:30', end: '16:00', label: '1:30 PM - 4:00 PM', isPremiumClass: true },
+                { start: '16:00', end: '17:15', label: '4:00 PM - 5:15 PM' },
+                { start: '17:15', end: '18:30', label: '5:15 PM - 6:30 PM', isHeelsClass: true }
+            ]
+        },
+        'Indirapuram': {
+            'Tuesday': [
+                { start: '17:15', end: '18:15', label: '5:15 PM - 6:15 PM', isKidsClass: true },
+                { start: '19:30', end: '20:45', label: '7:30 PM - 8:45 PM' },
+                { start: '20:45', end: '22:00', label: '8:45 PM - 10:00 PM', isHeelsClass: true }
+            ],
+            'Friday': [
+                { start: '17:15', end: '18:15', label: '5:15 PM - 6:15 PM', isKidsClass: true },
+                { start: '19:30', end: '20:45', label: '7:30 PM - 8:45 PM' },
+                { start: '20:45', end: '22:00', label: '8:45 PM - 10:00 PM' }
+            ],
+            'Sunday': [
+                { start: '13:30', end: '16:00', label: '1:30 PM - 4:00 PM', isPremiumClass: true },
+                { start: '16:00', end: '17:15', label: '4:00 PM - 5:15 PM' },
+                { start: '17:15', end: '18:30', label: '5:15 PM - 6:30 PM', isHeelsClass: true }
+            ]
+        },
+        'Ramgya': {
+            'Monday': [
+                { start: '18:45', end: '19:45', label: '6:45 PM - 7:45 PM', isKidsClass: true },
+                { start: '21:00', end: '22:15', label: '9:00 PM - 10:15 PM' }
+            ],
+            'Wednesday': [
+                { start: '20:30', end: '21:45', label: '8:30 PM - 9:45 PM', isHeelsClass: true }
+            ],
+            'Thursday': [
+                { start: '18:45', end: '19:45', label: '6:45 PM - 7:45 PM', isKidsClass: true },
+                { start: '21:00', end: '22:15', label: '9:00 PM - 10:15 PM' }
+            ],
+            'Saturday': [
+                { start: '19:15', end: '20:30', label: '7:15 PM - 8:30 PM', isHipHopClass: true },
+                { start: '20:30', end: '21:45', label: '8:30 PM - 9:45 PM', isHeelsClass: true }
+            ],
+            'Sunday': [
+                { start: '19:15', end: '20:30', label: '7:15 PM - 8:30 PM', isHipHopClass: true }
+            ]
+        },
+        'South Delhi': {
+            'Wednesday': [
+                { start: '17:15', end: '18:15', label: '5:15 PM - 6:15 PM', isKidsClass: true }
+            ],
+            'Saturday': [
+                { start: '13:30', end: '16:00', label: '1:30 PM - 4:00 PM', isPremiumClass: true },
+                { start: '17:15', end: '18:15', label: '5:15 PM - 6:15 PM', isKidsClass: true }
+            ],
+            'Sunday': [
+                { start: '11:00', end: '13:30', label: '11:00 AM - 1:30 PM', isPremiumClass: true },
+                { start: '13:30', end: '16:00', label: '1:30 PM - 4:00 PM', isHeelsClass: true }
+            ]
+        }
+    };
+
+    // Update time slots when studio is selected
+    document.querySelector('select[name="studio"]').addEventListener('change', function() {
+        const selectedStudio = this.value;
+        const selectedDate = document.querySelector('.fc-day-selected')?.getAttribute('data-date');
+        if (selectedStudio && selectedDate) {
+            updateTimeSlots(selectedDate, selectedStudio);
+        } else if (selectedStudio) {
+            // If no date is selected, use today's date
+            const today = new Date().toISOString().split('T')[0];
+            updateTimeSlots(today, selectedStudio);
+        }
+    });
+
+    function updateTimeSlots(date, studio) {
+        const selectedDate = new Date(date);
+        const dayName = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+        
+        // Update the selected date display
+        document.getElementById('selected-date').textContent = selectedDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        const timeSlotsContainer = document.getElementById('time-slots');
+        timeSlotsContainer.innerHTML = '';
+
+        // Get available slots for the selected day and studio
+        const availableSlots = studioTimeSlots[studio]?.[dayName] || [];
+        
+        if (availableSlots.length === 0) {
+            // No slots available for this day
+            const noSlotsDiv = document.createElement('div');
+            noSlotsDiv.className = 'no-slots-message';
+            noSlotsDiv.style.textAlign = 'center';
+            noSlotsDiv.style.padding = '20px';
+            noSlotsDiv.style.color = '#666';
+            noSlotsDiv.innerHTML = `
+                <i class="fas fa-calendar-times" style="font-size: 2em; margin-bottom: 10px; color: #ff007f;"></i>
+                <p style="font-weight: 500; color: #333;">Slots Sold Out</p>
+                <p style="font-size: 0.9em; margin-top: 5px;">Please select another date</p>
+            `;
+            timeSlotsContainer.appendChild(noSlotsDiv);
+            return;
+        }
+
+        // Generate time slots based on studio availability
+        availableSlots.forEach(slot => {
+            const timeSlot = document.createElement('div');
+            timeSlot.className = 'animate__animated animate__fadeIn';
+            
+            // Add special styling for different class types
+            const isHeelsClass = slot.isHeelsClass;
+            const isPremiumClass = slot.isPremiumClass;
+            const isKidsClass = slot.isKidsClass;
+            
+            const specialClassStyle = isHeelsClass ? `
+                <div class="heels-badge" style="
+                    position: absolute;
+                    top: -6px;
+                    right: -6px;
+                    background: linear-gradient(45deg, #ff007f, #ff6b6b);
+                    color: white;
+                    padding: 2px 6px;
+                    border-radius: 8px;
+                    font-size: 0.7em;
+                    font-weight: 700;
+                    box-shadow: 0 2px 8px rgba(255, 0, 127, 0.4);
+                    z-index: 1;
+                    white-space: nowrap;
+                    letter-spacing: 0.3px;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(4px);
+                ">
+                    <i class="fas fa-heels" style="margin-right: 2px; font-size: 0.9em; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));"></i>Heels
+                </div>
+                <div class="heels-note" style="
+                    font-size: 0.7em;
+                    color: #ff007f;
+                    margin-top: 2px;
+                    padding: 2px 6px;
+                    background: rgba(255, 0, 127, 0.1);
+                    border-radius: 4px;
+                    border: 1px solid rgba(255, 0, 127, 0.2);
+                    display: inline-block;
+                    position: absolute;
+                    right: 6px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    letter-spacing: 0.2px;
+                ">
+                    <i class="fas fa-info-circle" style="margin-right: 1px; font-size: 0.9em;"></i>
+                    Heels required
+                </div>
+            ` : isPremiumClass ? `
+                <div class="premium-badge" style="
+                    position: absolute;
+                    top: -6px;
+                    right: -6px;
+                    background: linear-gradient(45deg, #4a90e2, #357abd);
+                    color: white;
+                    padding: 2px 6px;
+                    border-radius: 8px;
+                    font-size: 0.7em;
+                    font-weight: 700;
+                    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.4);
+                    z-index: 1;
+                    white-space: nowrap;
+                    letter-spacing: 0.3px;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(4px);
+                ">
+                    <i class="fas fa-crown" style="margin-right: 2px; font-size: 0.9em; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));"></i>Premium
+                </div>
+                <div class="premium-note" style="
+                    font-size: 0.7em;
+                    color: #4a90e2;
+                    margin-top: 2px;
+                    padding: 2px 6px;
+                    background: rgba(74, 144, 226, 0.1);
+                    border-radius: 4px;
+                    border: 1px solid rgba(74, 144, 226, 0.2);
+                    display: inline-block;
+                    position: absolute;
+                    right: 6px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    letter-spacing: 0.2px;
+                ">
+                    <i class="fas fa-info-circle" style="margin-right: 1px; font-size: 0.9em;"></i>
+                    Double Class
+                </div>
+            ` : isKidsClass ? `
+                <div class="kids-badge" style="
+                    position: absolute;
+                    top: -6px;
+                    right: -6px;
+                    background: linear-gradient(45deg, #00c853, #69f0ae);
+                    color: white;
+                    padding: 2px 6px;
+                    border-radius: 8px;
+                    font-size: 0.7em;
+                    font-weight: 700;
+                    box-shadow: 0 2px 8px rgba(0, 200, 83, 0.4);
+                    z-index: 1;
+                    white-space: nowrap;
+                    letter-spacing: 0.3px;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(4px);
+                ">
+                    <i class="fas fa-child" style="margin-right: 2px; font-size: 0.9em; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));"></i>Kids
+                </div>
+                <div class="kids-note" style="
+                    font-size: 0.7em;
+                    color: #00c853;
+                    margin-top: 2px;
+                    padding: 2px 6px;
+                    background: rgba(0, 200, 83, 0.1);
+                    border-radius: 4px;
+                    border: 1px solid rgba(0, 200, 83, 0.2);
+                    display: inline-block;
+                    position: absolute;
+                    right: 6px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    letter-spacing: 0.2px;
+                ">
+                    <i class="fas fa-info-circle" style="margin-right: 1px; font-size: 0.9em;"></i>
+                    5-10 y/o
+                </div>
+            ` : '';
+
+            timeSlot.innerHTML = `
+                <div class="time-slot ${isHeelsClass ? 'heels-class' : ''} ${isPremiumClass ? 'premium-class' : ''} ${isKidsClass ? 'kids-class' : ''}" 
+                     onclick="selectTimeSlot(this, '${date}', '${slot.start}', '${slot.end}')" 
+                     role="button" 
+                     tabindex="0"
+                     style="${isHeelsClass ? 'background: linear-gradient(135deg, rgba(255, 0, 127, 0.05), rgba(255, 107, 107, 0.05)); position: relative; padding: 8px 12px;' : ''} ${isPremiumClass ? 'background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(53, 122, 189, 0.05)); position: relative; padding: 8px 12px;' : ''} ${isKidsClass ? 'background: linear-gradient(135deg, rgba(0, 200, 83, 0.05), rgba(105, 240, 174, 0.05)); position: relative; padding: 8px 12px;' : ''}">
+                    ${specialClassStyle}
+                    <input type="radio" 
+                           name="time_slot" 
+                           class="time-slot-radio" 
+                           value="${slot.start}-${slot.end}"
+                           data-date="${date}"
+                           data-start="${slot.start}"
+                           data-end="${slot.end}"
+                           onchange="handleTimeSlotSelection(this)">
+                    <div class="time-slot-content" style="${(isHeelsClass || isPremiumClass || isKidsClass) ? 'padding-right: 110px;' : ''}">
+                        <div class="time-slot-time" style="${(isHeelsClass || isPremiumClass || isKidsClass) ? 'font-size: 0.95em;' : ''}">${slot.label}</div>
+                    </div>
+                </div>
+            `;
+            timeSlotsContainer.appendChild(timeSlot);
+        });
+    }
+
+    function handleTimeSlotSelection(radio) {
+        const timeSlot = radio.closest('.time-slot');
+        const date = radio.getAttribute('data-date');
+        const startTime = radio.getAttribute('data-start');
+        const endTime = radio.getAttribute('data-end');
+        
+        // Format the date and time for display and storage
+        const selectedDate = new Date(date);
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Update hidden form fields
+        document.getElementById('booking_date').value = formattedDate;
+        document.getElementById('booking_time').value = `${startTime}-${endTime}`;
+        document.getElementById('time_slot').value = `${startTime}-${endTime}`;
+        document.getElementById('formatted_date_time').value = `${formattedDate} | ${startTime}-${endTime}`;
+        
+        // Remove any existing time slot error message
+        const existingError = document.getElementById('timeSlotError');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        selectTimeSlot(timeSlot, date, startTime, endTime);
+    }
+
+    function selectTimeSlot(element, date, startTime, endTime) {
+        // Prevent selection if slot is sold out
+        if (element.closest('.sold-out')) {
+            return;
+        }
+        
+        // Prevent event bubbling
+        event?.stopPropagation();
+        
+        // Remove selected class from all time slots
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            if (slot !== element) {
+                slot.classList.remove('selected');
+                slot.style.transform = '';
+                slot.style.boxShadow = '';
+                slot.style.width = '100%';
+                slot.style.marginLeft = '';
+                slot.style.marginRight = '';
+            }
+        });
+        
+        // Add selected class to clicked time slot
+        element.classList.add('selected');
+        
+        // Store the selected values
+        const selectedDate = new Date(date);
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Store values in data attributes
+        element.setAttribute('data-selected-start', startTime);
+        element.setAttribute('data-selected-end', endTime);
+        element.setAttribute('data-selected-date', date);
+        element.setAttribute('data-formatted-date', formattedDate);
+        
+        // Store booking data in hidden form fields
+        document.getElementById('booking_date').value = formattedDate;
+        document.getElementById('booking_time').value = `${startTime}-${endTime}`;
+        document.getElementById('formatted_date_time').value = `${formattedDate} | ${startTime}-${endTime}`;
+        
+        // Remove any existing time slot error message
+        const existingError = document.getElementById('timeSlotError');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        // Add haptic feedback if available
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+        
+        // Add visual feedback
+        element.style.transform = 'scale(1.02)';
+        element.style.boxShadow = '0 8px 25px rgba(255, 0, 127, 0.2)';
+        element.style.width = '60%';
+        element.style.marginLeft = 'auto';
+        element.style.marginRight = 'auto';
+        element.style.backgroundColor = 'rgba(255, 0, 127, 0.15)';
+        element.style.borderColor = '#ff007f';
+        element.style.color = '#ff007f';
+        
+        // Add success sound if available
+        const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+        audio.play().catch(() => {}); // Ignore errors if audio is not supported
+
+        // Show system UI alert
+        const systemAlert = document.createElement('div');
+        systemAlert.className = 'system-alert animate__animated animate__fadeIn';
+        systemAlert.style.position = 'fixed';
+        systemAlert.style.bottom = '20px';
+        systemAlert.style.left = '50%';
+        systemAlert.style.transform = 'translateX(-50%)';
+        systemAlert.style.zIndex = '1000';
+        systemAlert.style.padding = '15px 25px';
+        systemAlert.style.borderRadius = '12px';
+        systemAlert.style.backgroundColor = 'rgba(255, 0, 127, 0.15)';
+        systemAlert.style.color = '#ff007f';
+        systemAlert.style.boxShadow = '0 4px 15px rgba(255, 0, 127, 0.2)';
+        systemAlert.style.backdropFilter = 'blur(10px)';
+        systemAlert.style.display = 'flex';
+        systemAlert.style.alignItems = 'center';
+        systemAlert.style.gap = '10px';
+        systemAlert.style.border = '1px solid rgba(255, 0, 127, 0.3)';
+        systemAlert.innerHTML = `
+            <div style="width: 8px; height: 8px; background-color: #ff007f; border-radius: 50%;"></div>
+            <div>
+                <strong style="display: block; font-size: 0.9em; margin-bottom: 2px;">Time Slot Selected</strong>
+                <span style="font-size: 0.85em; opacity: 0.9;">${formattedDate} at ${startTime} - ${endTime}</span>
+            </div>
+        `;
+        document.body.appendChild(systemAlert);
+
+        // Remove system alert after 3 seconds
+        setTimeout(() => {
+            systemAlert.classList.add('animate__fadeOut');
+            setTimeout(() => {
+                document.body.removeChild(systemAlert);
+            }, 500);
+        }, 3000);
+    }
+
+    // Initialize with today's date and default studio
+    const defaultStudio = document.querySelector('select[name="studio"]').value;
+    if (defaultStudio) {
+        const today = new Date().toISOString().split('T')[0];
+        updateTimeSlots(today, defaultStudio);
+    }
+
+    // Initialize date picker
+    const datePicker = document.getElementById('booking_date');
+    
+    // Set min date to today
+    const today = new Date();
+    const minDate = today.toISOString().split('T')[0];
+    
+    // Set max date to July 6th
+    const maxDate = '2024-07-06';
+    
+    // Disable dates from June 15th to July 6th
+    const disabledDates = [];
+    const startDate = new Date('2024-06-15');
+    const endDate = new Date('2024-07-06');
+    
+    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+        disabledDates.push(d.toISOString().split('T')[0]);
+    }
+
+    // Initialize date picker with disabled dates
+    flatpickr(datePicker, {
+        minDate: minDate,
+        maxDate: maxDate,
+        disable: disabledDates,
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr) {
+            // Update the formatted date display
+            const formattedDate = selectedDates[0].toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('formatted_date').textContent = formattedDate;
+        }
+    });
+});
+
+function validateForm() {
+    let isValid = true;
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const email = document.getElementById('email').value;
+    const studio = document.getElementById('studio').value;
+    const timeSlot = document.querySelector('input[name="time_slot"]:checked');
+
+    // Reset error messages
+    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+    // Validate name
+    if (!name.trim()) {
+        document.getElementById('nameError').textContent = 'Please enter your name';
+        document.getElementById('nameError').style.display = 'block';
+        isValid = false;
+    }
+
+    // Validate phone
+    if (!phone.trim()) {
+        document.getElementById('phoneError').textContent = 'Please enter your phone number';
+        document.getElementById('phoneError').style.display = 'block';
+        isValid = false;
+    } else if (!/^\d{10}$/.test(phone)) {
+        document.getElementById('phoneError').textContent = 'Please enter a valid 10-digit phone number';
+        document.getElementById('phoneError').style.display = 'block';
+        isValid = false;
+    }
+
+    // Validate email
+    if (!email.trim()) {
+        document.getElementById('emailError').textContent = 'Please enter your email';
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('emailError').textContent = 'Please enter a valid email address';
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+    }
+
+    // Validate studio
+    if (!studio) {
+        document.getElementById('studioError').textContent = 'Please select a studio';
+        document.getElementById('studioError').style.display = 'block';
+        isValid = false;
+    }
+
+    // Validate date and time selection
+    if (!timeSlot) {
+        const timeSlotError = document.createElement('div');
+        timeSlotError.className = 'error-message';
+        timeSlotError.id = 'timeSlotError';
+        timeSlotError.textContent = 'Please select a date and time slot';
+        timeSlotError.style.display = 'block';
+        document.getElementById('time-slots').appendChild(timeSlotError);
+        isValid = false;
+    }
+
+    if (isValid) {
+        // Get the selected time slot data
+        const selectedDate = new Date(timeSlot.getAttribute('data-date'));
+        const startTime = timeSlot.getAttribute('data-start');
+        const endTime = timeSlot.getAttribute('data-end');
+        
+        // Format the date
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Set the hidden form fields
+        document.getElementById('booking_date').value = formattedDate;
+        document.getElementById('booking_time').value = `${startTime}-${endTime}`;
+        document.getElementById('formatted_date_time').value = `${formattedDate} | ${startTime}-${endTime}`;
+
+        // Show loading state
+        const submitButton = document.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Processing...
+        `;
+
+        // Get the payment URL based on studio
+        const paymentUrls = {
+            'Noida': 'https://rzp.io/rzp/oGrCyY3K',
+            'Rajouri Garden': 'https://rzp.io/rzp/J5Aal4b4',
+            'Pitampura': 'https://rzp.io/rzp/MUOtfB9',
+            'Gurgaon': 'https://rzp.io/rzp/ZQmBMw4',
+            'East Delhi': 'https://rzp.io/rzp/3SJEjCS',
+            'South Delhi': 'https://rzp.io/rzp/z5WJ4TVU',
+            'Indirapuram': 'https://rzp.io/l/pDfeGSjmQ1',
+            'Ramgya': 'https://rzp.io/rzp/oGrCyY3K'
+        };
+
+        // Create form data
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('phone', phone);
+        formData.append('email', email);
+        formData.append('studio', studio);
+        formData.append('booking_date', formattedDate);
+        formData.append('booking_time', `${startTime}-${endTime}`);
+        formData.append('formatted_date_time', `${formattedDate} | ${startTime}-${endTime}`);
+        formData.append('payment_url', paymentUrls[studio]);
+
+        // Submit form using fetch
+        fetch('/register/process', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err.error || 'Server error occurred');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success && data.payment_url) {
+                // Show success alert before redirecting
+                const successAlert = document.createElement('div');
+                successAlert.className = 'system-alert animate__animated animate__fadeIn';
+                successAlert.style.position = 'fixed';
+                successAlert.style.bottom = '20px';
+                successAlert.style.left = '50%';
+                successAlert.style.transform = 'translateX(-50%)';
+                successAlert.style.zIndex = '1000';
+                successAlert.style.padding = '15px 25px';
+                successAlert.style.borderRadius = '12px';
+                successAlert.style.backgroundColor = 'rgba(0, 200, 83, 0.15)';
+                successAlert.style.color = '#00c853';
+                successAlert.style.boxShadow = '0 4px 15px rgba(0, 200, 83, 0.2)';
+                successAlert.style.backdropFilter = 'blur(10px)';
+                successAlert.style.display = 'flex';
+                successAlert.style.alignItems = 'center';
+                successAlert.style.gap = '10px';
+                successAlert.style.border = '1px solid rgba(0, 200, 83, 0.3)';
+                successAlert.innerHTML = `
+                    <div style="width: 8px; height: 8px; background-color: #00c853; border-radius: 50%;"></div>
+                    <div>
+                        <strong style="display: block; font-size: 0.9em; margin-bottom: 2px;">Processing Registration</strong>
+                        <span style="font-size: 0.85em; opacity: 0.9;">Redirecting to payment...</span>
+                    </div>
+                `;
+                document.body.appendChild(successAlert);
+
+                // Remove alert and redirect after a short delay
+                setTimeout(() => {
+                    successAlert.classList.add('animate__fadeOut');
+                    setTimeout(() => {
+                        document.body.removeChild(successAlert);
+                        window.location.href = data.payment_url;
+                    }, 500);
+                }, 1500);
+            } else {
+                throw new Error(data.error || 'Registration failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message || 'An error occurred. Please try again.');
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Checkout';
+        });
+    }
+
+    return false;
+}
+
+</script>
 
 </body>
 </html>

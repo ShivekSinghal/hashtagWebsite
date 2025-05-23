@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule Calendar</title>
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/main.min.css' rel='stylesheet' />
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/main.min.css' rel='stylesheet' />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #calendar {
+            margin-top: 20px;
+        }
+        .fc-event {
+            cursor: pointer;
+        }
+        .unavailable {
+            background-color: #ff6b6b !important;
+            border-color: #ff6b6b !important;
+        }
+        .available {
+            background-color: #4CAF50 !important;
+            border-color: #4CAF50 !important;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 50%;
+            max-width: 500px;
+        }
+        .close {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Class Schedule Calendar</h1>
+        <div id="calendar"></div>
+    </div>
+
+    <div id="classModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Class Details</h2>
+            <div id="classDetails"></div>
+        </div>
+    </div>
+
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.10/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.10/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const modal = document.getElementById('classModal');
+            const closeBtn = document.getElementsByClassName('close')[0];
+
+            // Sample class data
+            const classes = [
+                {
+                    title: 'Yoga Class',
+                    start: '2024-03-20',
+                    className: 'available',
+                    description: 'Morning Yoga Session - 8:00 AM'
+                },
+                {
+                    title: 'Pilates',
+                    start: '2024-03-21',
+                    className: 'available',
+                    description: 'Pilates Class - 10:00 AM'
+                },
+                {
+                    title: 'Unavailable',
+                    start: '2024-03-22',
+                    className: 'unavailable',
+                    description: 'This day is fully booked'
+                },
+                {
+                    title: 'Zumba',
+                    start: '2024-03-23',
+                    className: 'available',
+                    description: 'Zumba Dance Class - 2:00 PM'
+                }
+            ];
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek'
+                },
+                events: classes,
+                eventClick: function(info) {
+                    const classDetails = document.getElementById('classDetails');
+                    classDetails.innerHTML = `
+                        <h3>${info.event.title}</h3>
+                        <p>${info.event.extendedProps.description}</p>
+                        <p>Date: ${info.event.start.toDateString()}</p>
+                    `;
+                    modal.style.display = 'block';
+                }
+            });
+
+            calendar.render();
+
+            // Close modal when clicking the X
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
