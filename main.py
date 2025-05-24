@@ -56,25 +56,25 @@ STUDIO_URLS = {
 }
 
 STUDIO_URLS_DROPIN = {
-    'Noida': 'https://rzp.io/rzp/oGrCyY3K',
-    'Rajouri Garden': 'https://rzp.io/rzp/J5Aal4b4',
-    'Pitampura': 'https://rzp.io/rzp/MUOtfB9',
-    'Gurgaon': 'https://rzp.io/rzp/ZQmBMw4',
+    'Noida': 'https://rzp.io/rzp/Oy2qeBg6',
+    'Rajouri Garden': 'https://rzp.io/rzp/zNN4CSK',
+    'Pitampura': 'https://pages.razorpay.com/pl_QYvyYB48pAt9pb/view',
+    'Gurgaon': 'https://rzp.io/rzp/vwlWqKfP',
     'East Delhi': 'https://rzp.io/rzp/3SJEjCS',
     'South Delhi': 'https://rzp.io/rzp/z5WJ4TVU',
-    'Indirapuram': 'https://rzp.io/l/pDfeGSjmQ1',
-    'Ramgya': 'https://rzp.io/rzp/oGrCyY3K'
+    'Indirapuram': 'https://rzp.io/rzp/Oy2qeBg6',
+    'Ramgya': 'https://rzp.io/rzp/Oy2qeBg6'
 }
 
 STUDIO_URLS_PREMIUM_DROPIN = {
-    'Noida': 'https://rzp.io/rzp/oGrCyY3K',
-    'Rajouri Garden': 'https://rzp.io/rzp/J5Aal4b4',
-    'Pitampura': 'https://rzp.io/rzp/MUOtfB9',
-    'Gurgaon': 'https://rzp.io/rzp/ZQmBMw4',
+    'Noida': 'https://rzp.io/rzp/IkR8nxAJ',
+    'Rajouri Garden': 'https://rzp.io/rzp/G8Ts2UXP',
+    'Pitampura': 'https://pages.razorpay.com/pl_QYvzeKYlv5WHM5/view',
+    'Gurgaon': 'https://rzp.io/rzp/G2VpFII',
     'East Delhi': 'https://rzp.io/rzp/4zBovXMp',
-    'South Delhi': 'https://rzp.io/rzp/z5WJ4TVU',
-    'Indirapuram': 'https://rzp.io/l/pDfeGSjmQ1',
-    'Ramgya': 'https://rzp.io/rzp/oGrCyY3K'
+    'South Delhi': 'https://rzp.io/rzp/o7nqawaf',
+    'Indirapuram': 'https://rzp.io/rzp/IkR8nxAJ',
+    'Ramgya': 'https://rzp.io/rzp/IkR8nxAJ'
 }
 
 STUDIO_URLS_SIXMONTH = {
@@ -317,6 +317,6 @@ def razorpay_webhook():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5500)
+    app.run(debug=True, port=5000)
 
 

@@ -463,7 +463,7 @@
                 margin: 0;
                 padding: 15px 20px;
                 font-size: 1.1em;
-                border-radius: 0;
+                border-radius: 30px;
             }
             .form-control, .form-select {
                 border-radius: 8px;
@@ -547,7 +547,7 @@
 
 <div class="main-container">
     <h1 class="main-title animate__animated animate__fadeInDown">Book A Class</h1>
-    
+
     <div class="content-container">
         <div class="form-container animate__animated animate__fadeInLeft">
             <form method="POST" id="registrationForm" action="{{ url_for('register_process') }}" onsubmit="return validateForm()">
@@ -621,7 +621,7 @@
 <script>
 function handleFormSubmit(event) {
     event.preventDefault();
-    
+
     // Check if a time slot is selected
     const selectedTimeSlot = document.querySelector('input[name="time_slot"]:checked');
     if (!selectedTimeSlot) {
@@ -694,11 +694,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const clickedDate = new Date(info.dateStr);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            
+
             // Check if date is in sold out period (June 15th to July 6th)
             const soldOutStart = new Date('2024-06-15');
             const soldOutEnd = new Date('2024-07-06');
-            
+
             if (clickedDate < today || (clickedDate >= soldOutStart && clickedDate <= soldOutEnd)) {
                 // Show sold out message
                 const timeSlotsContainer = document.getElementById('time-slots');
@@ -711,7 +711,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 return;
             }
-            
+
             const selectedStudio = document.querySelector('select[name="studio"]').value;
             if (selectedStudio) {
                 updateTimeSlots(info.dateStr, selectedStudio);
@@ -738,11 +738,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const date = info.date;
             const soldOutStart = new Date('2024-06-15');
             const soldOutEnd = new Date('2024-07-06');
-            
+
             if (date >= soldOutStart && date <= soldOutEnd) {
                 info.el.classList.add('fc-day-sold-out');
                 info.el.style.pointerEvents = 'none';
-                
+
                 // Add sold out indicator
                 const dayNumber = info.el.querySelector('.fc-daygrid-day-number');
                 if (dayNumber) {
@@ -928,7 +928,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateTimeSlots(date, studio) {
         const selectedDate = new Date(date);
         const dayName = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
-        
+
         // Update the selected date display
         document.getElementById('selected-date').textContent = selectedDate.toLocaleDateString('en-US', {
             weekday: 'long',
@@ -936,13 +936,13 @@ document.addEventListener('DOMContentLoaded', function() {
             month: 'long',
             day: 'numeric'
         });
-        
+
         const timeSlotsContainer = document.getElementById('time-slots');
         timeSlotsContainer.innerHTML = '';
 
         // Get available slots for the selected day and studio
         const availableSlots = studioTimeSlots[studio]?.[dayName] || [];
-        
+
         if (availableSlots.length === 0) {
             // No slots available for this day
             const noSlotsDiv = document.createElement('div');
@@ -963,12 +963,12 @@ document.addEventListener('DOMContentLoaded', function() {
         availableSlots.forEach(slot => {
             const timeSlot = document.createElement('div');
             timeSlot.className = 'animate__animated animate__fadeIn';
-            
+
             // Add special styling for different class types
             const isHeelsClass = slot.isHeelsClass;
             const isPremiumClass = slot.isPremiumClass;
             const isKidsClass = slot.isKidsClass;
-            
+
             const specialClassStyle = isHeelsClass ? `
                 <div class="heels-badge" style="
                     position: absolute;
@@ -1089,15 +1089,15 @@ document.addEventListener('DOMContentLoaded', function() {
             ` : '';
 
             timeSlot.innerHTML = `
-                <div class="time-slot ${isHeelsClass ? 'heels-class' : ''} ${isPremiumClass ? 'premium-class' : ''} ${isKidsClass ? 'kids-class' : ''}" 
-                     onclick="selectTimeSlot(this, '${date}', '${slot.start}', '${slot.end}')" 
-                     role="button" 
+                <div class="time-slot ${isHeelsClass ? 'heels-class' : ''} ${isPremiumClass ? 'premium-class' : ''} ${isKidsClass ? 'kids-class' : ''}"
+                     onclick="selectTimeSlot(this, '${date}', '${slot.start}', '${slot.end}')"
+                     role="button"
                      tabindex="0"
                      style="${isHeelsClass ? 'background: linear-gradient(135deg, rgba(255, 0, 127, 0.05), rgba(255, 107, 107, 0.05)); position: relative; padding: 8px 12px;' : ''} ${isPremiumClass ? 'background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(53, 122, 189, 0.05)); position: relative; padding: 8px 12px;' : ''} ${isKidsClass ? 'background: linear-gradient(135deg, rgba(0, 200, 83, 0.05), rgba(105, 240, 174, 0.05)); position: relative; padding: 8px 12px;' : ''}">
                     ${specialClassStyle}
-                    <input type="radio" 
-                           name="time_slot" 
-                           class="time-slot-radio" 
+                    <input type="radio"
+                           name="time_slot"
+                           class="time-slot-radio"
                            value="${slot.start}-${slot.end}"
                            data-date="${date}"
                            data-start="${slot.start}"
@@ -1117,7 +1117,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = radio.getAttribute('data-date');
         const startTime = radio.getAttribute('data-start');
         const endTime = radio.getAttribute('data-end');
-        
+
         // Format the date and time for display and storage
         const selectedDate = new Date(date);
         const formattedDate = selectedDate.toLocaleDateString('en-US', {
@@ -1126,19 +1126,19 @@ document.addEventListener('DOMContentLoaded', function() {
             month: 'long',
             day: 'numeric'
         });
-        
+
         // Update hidden form fields
         document.getElementById('booking_date').value = formattedDate;
         document.getElementById('booking_time').value = `${startTime}-${endTime}`;
         document.getElementById('time_slot').value = `${startTime}-${endTime}`;
         document.getElementById('formatted_date_time').value = `${formattedDate} | ${startTime}-${endTime}`;
-        
+
         // Remove any existing time slot error message
         const existingError = document.getElementById('timeSlotError');
         if (existingError) {
             existingError.remove();
         }
-        
+
         selectTimeSlot(timeSlot, date, startTime, endTime);
     }
 
@@ -1147,10 +1147,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (element.closest('.sold-out')) {
             return;
         }
-        
+
         // Prevent event bubbling
         event?.stopPropagation();
-        
+
         // Remove selected class from all time slots
         document.querySelectorAll('.time-slot').forEach(slot => {
             if (slot !== element) {
@@ -1162,10 +1162,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 slot.style.marginRight = '';
             }
         });
-        
+
         // Add selected class to clicked time slot
         element.classList.add('selected');
-        
+
         // Store the selected values
         const selectedDate = new Date(date);
         const formattedDate = selectedDate.toLocaleDateString('en-US', {
@@ -1174,29 +1174,29 @@ document.addEventListener('DOMContentLoaded', function() {
             month: 'long',
             day: 'numeric'
         });
-        
+
         // Store values in data attributes
         element.setAttribute('data-selected-start', startTime);
         element.setAttribute('data-selected-end', endTime);
         element.setAttribute('data-selected-date', date);
         element.setAttribute('data-formatted-date', formattedDate);
-        
+
         // Store booking data in hidden form fields
         document.getElementById('booking_date').value = formattedDate;
         document.getElementById('booking_time').value = `${startTime}-${endTime}`;
         document.getElementById('formatted_date_time').value = `${formattedDate} | ${startTime}-${endTime}`;
-        
+
         // Remove any existing time slot error message
         const existingError = document.getElementById('timeSlotError');
         if (existingError) {
             existingError.remove();
         }
-        
+
         // Add haptic feedback if available
         if (navigator.vibrate) {
             navigator.vibrate(50);
         }
-        
+
         // Add visual feedback
         element.style.transform = 'scale(1.02)';
         element.style.boxShadow = '0 8px 25px rgba(255, 0, 127, 0.2)';
@@ -1206,7 +1206,7 @@ document.addEventListener('DOMContentLoaded', function() {
         element.style.backgroundColor = 'rgba(255, 0, 127, 0.15)';
         element.style.borderColor = '#ff007f';
         element.style.color = '#ff007f';
-        
+
         // Add success sound if available
         const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
         audio.play().catch(() => {}); // Ignore errors if audio is not supported
@@ -1256,19 +1256,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize date picker
     const datePicker = document.getElementById('booking_date');
-    
+
     // Set min date to today
     const today = new Date();
     const minDate = today.toISOString().split('T')[0];
-    
+
     // Set max date to July 6th
     const maxDate = '2024-07-06';
-    
+
     // Disable dates from June 15th to July 6th
     const disabledDates = [];
     const startDate = new Date('2024-06-15');
     const endDate = new Date('2024-07-06');
-    
+
     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
         disabledDates.push(d.toISOString().split('T')[0]);
     }
@@ -1355,7 +1355,7 @@ function validateForm() {
         const selectedDate = new Date(timeSlot.getAttribute('data-date'));
         const startTime = timeSlot.getAttribute('data-start');
         const endTime = timeSlot.getAttribute('data-end');
-        
+
         // Format the date
         const formattedDate = selectedDate.toLocaleDateString('en-US', {
             weekday: 'long',
