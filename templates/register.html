@@ -418,6 +418,64 @@
                 width: 100%;
             }
         }
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                min-height: 100vh;
+                display: block;
+                margin: 0;
+            }
+            .main-container {
+                width: 100%;
+                padding: 0;
+                border-radius: 0;
+                min-height: 100vh;
+                margin: 0;
+            }
+            .content-container {
+                gap: 0;
+                padding: 0;
+            }
+            .form-container, .calendar-container, .time-slots-container {
+                padding: 15px;
+                border-radius: 0;
+                margin: 0;
+                width: 100%;
+            }
+            .main-title {
+                font-size: 1.8em;
+                margin: 15px 0;
+                padding: 0 15px;
+            }
+            .submit-container {
+                position: sticky;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                padding: 15px;
+                margin: 0;
+                border-radius: 0;
+                z-index: 1000;
+                width: 100%;
+            }
+            .btn-custom {
+                width: 100%;
+                margin: 0;
+                padding: 15px 20px;
+                font-size: 1.1em;
+                border-radius: 0;
+            }
+            .form-control, .form-select {
+                border-radius: 8px;
+            }
+            .time-slot {
+                border-radius: 8px;
+            }
+            #calendar {
+                border-radius: 0;
+                margin: 0;
+            }
+        }
         .btn-custom:disabled {
             background-color: #ff007f;
             opacity: 0.7;
