@@ -152,11 +152,34 @@
   }
 
   /* Hero section video container styling */
+  .hero-img {
+    width: 100%;
+    max-width: 408px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 15px;
+  }
+
   .hero-img iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(255, 0, 127, 0.2);
     background: linear-gradient(135deg, #ff007f 0%, #000000 100%);
     padding: 3px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-img {
+        padding: 0 10px;
+        margin-top: 20px;
+    }
+    
+    .hero-img iframe {
+        max-width: 100%;
+        margin: 0 auto;
+    }
   }
 </style>
 
@@ -204,7 +227,7 @@
 
     <!-- Hero Section -->
     <section id="hero" class="hero section dark-background">
-      <img src="assets/img/hashtaglogo.png" alt="Logo" class="hero-bg">
+      <!-- <img src="assets/img/hashtaglogo.png" alt="Logo" class="hero-bg"> -->
 
       <div class="container">
         <div class="row gy-4 justify-content-between">
@@ -254,7 +277,7 @@
         <div class="row justify-content-center">
           <div class="col-lg-6 col-md-8" data-aos="zoom-in" data-aos-delay="200">
             <div class="pricing-item featured" style="margin: 0 auto; max-width: 500px;">
-              <p class="popular">Popular</p>
+<!--              <p class="popular">Popular</p>-->
               <h3>Drop In</h3>
               <p class="description">Train and perform on stage</p>
               <h4><sup>₹</sup>720<span> per class</span></h4>
@@ -323,7 +346,7 @@
     <i class="faq-icon bi bi-question-circle"></i>
     <h3>Do I need to register in advance?</h3>
     <div class="faq-content">
-      <p>Yes, pre-registration is required as spots are limited at each of our 8 studio locations. Just hit the “Register Now” button and choose your preferred studio.</p>
+      <p>Yes, pre-registration is required as spots are limited at each of our 8 studio locations. Just hit the "Register Now" button and choose your preferred studio.</p>
     </div>
     <i class="faq-toggle bi bi-chevron-right"></i>
   </div><!-- End Faq item-->
@@ -368,7 +391,7 @@
     <i class="faq-icon bi bi-question-circle"></i>
     <h3>Will this class help me decide on joining a regular batch?</h3>
     <div class="faq-content">
-      <p>Yes! That’s what it’s for. You’ll get a real taste of our teaching style, studio energy, and what to expect from our regular batches.</p>
+      <p>Yes! That's what it's for. You'll get a real taste of our teaching style, studio energy, and what to expect from our regular batches.</p>
     </div>
     <i class="faq-toggle bi bi-chevron-right"></i>
   </div><!-- End Faq item-->
