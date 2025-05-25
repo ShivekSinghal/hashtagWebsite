@@ -139,17 +139,53 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             border-color: #ff007f;
         }
+        .time-slot:hover .time-slot-radio {
+            border-color: #ff007f;
+            background-color: rgba(255, 0, 127, 0.1);
+        }
+        .time-slot:hover .time-slot-time {
+            color: #ff007f;
+        }
         .time-slot.selected {
-            background: rgba(255, 0, 127, 0.15);
+            background: linear-gradient(135deg, rgba(255, 0, 127, 0.15), rgba(255, 107, 107, 0.15));
             color: #ff007f;
             transform: scale(1.02);
             box-shadow: 0 8px 25px rgba(255, 0, 127, 0.2);
-            border-color: #ff007f;
+            border: 2px solid #ff007f;
             width: 60%;
             margin-left: auto;
             margin-right: auto;
             animation: selectedPulse 2s ease infinite;
             backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        .time-slot.selected::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(255, 0, 127, 0.1),
+                rgba(255, 107, 107, 0.1)
+            );
+            z-index: 0;
+            animation: shimmer 2s infinite;
+        }
+        .time-slot.selected .time-slot-time {
+            color: #ff007f;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(255, 0, 127, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        .time-slot.selected .time-slot-radio {
+            border-color: #ff007f;
+            background-color: rgba(255, 0, 127, 0.1);
+            position: relative;
+            z-index: 1;
         }
         @keyframes selectedPulse {
             0% {
@@ -162,10 +198,13 @@
                 box-shadow: 0 8px 25px rgba(255, 0, 127, 0.2);
             }
         }
-        .time-slot.selected .time-slot-time {
-            color: #ff007f;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(255, 0, 127, 0.1);
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
         }
         .time-slot-content {
             display: flex;
@@ -695,11 +734,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            // Check if date is in sold out period (June 15th to July 6th)
-            const soldOutStart = new Date('2024-06-15');
-            const soldOutEnd = new Date('2024-07-06');
+            // Check if date is in sold out period (after June 15th, 2025)
+            const soldOutDate = new Date('2025-06-15');
 
-            if (clickedDate < today || (clickedDate >= soldOutStart && clickedDate <= soldOutEnd)) {
+            if (clickedDate < today || clickedDate > soldOutDate) {
                 // Show sold out message
                 const timeSlotsContainer = document.getElementById('time-slots');
                 timeSlotsContainer.innerHTML = `
@@ -928,6 +966,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateTimeSlots(date, studio) {
         const selectedDate = new Date(date);
         const dayName = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+        const cutoffDate = new Date('2025-06-15');
 
         // Update the selected date display
         document.getElementById('selected-date').textContent = selectedDate.toLocaleDateString('en-US', {
@@ -942,6 +981,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Get available slots for the selected day and studio
         const availableSlots = studioTimeSlots[studio]?.[dayName] || [];
+
+        // Only show sold out message if date is after cutoff AND there are no available slots
+        if (selectedDate > cutoffDate && availableSlots.length === 0) {
+            const soldOutDiv = document.createElement('div');
+            soldOutDiv.className = 'no-slots-message';
+            soldOutDiv.style.textAlign = 'center';
+            soldOutDiv.style.padding = '20px';
+            soldOutDiv.style.color = '#666';
+            soldOutDiv.innerHTML = `
+                <i class="fas fa-calendar-times" style="font-size: 2em; margin-bottom: 10px; color: #ff007f;"></i>
+                <p style="font-weight: 500; color: #333;">Slots Sold Out</p>
+                <p style="font-size: 0.9em; margin-top: 5px;">Please select another date</p>
+            `;
+            timeSlotsContainer.appendChild(soldOutDiv);
+            return;
+        }
 
         if (availableSlots.length === 0) {
             // No slots available for this day
@@ -1090,7 +1145,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             timeSlot.innerHTML = `
                 <div class="time-slot ${isHeelsClass ? 'heels-class' : ''} ${isPremiumClass ? 'premium-class' : ''} ${isKidsClass ? 'kids-class' : ''}"
-                     onclick="selectTimeSlot(this, '${date}', '${slot.start}', '${slot.end}')"
+                     onclick="selectTimeSlot(this, '${date}', '${slot.start}', '${slot.end}', event)"
                      role="button"
                      tabindex="0"
                      style="${isHeelsClass ? 'background: linear-gradient(135deg, rgba(255, 0, 127, 0.05), rgba(255, 107, 107, 0.05)); position: relative; padding: 8px 12px;' : ''} ${isPremiumClass ? 'background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(53, 122, 189, 0.05)); position: relative; padding: 8px 12px;' : ''} ${isKidsClass ? 'background: linear-gradient(135deg, rgba(0, 200, 83, 0.05), rgba(105, 240, 174, 0.05)); position: relative; padding: 8px 12px;' : ''}">
@@ -1139,17 +1194,28 @@ document.addEventListener('DOMContentLoaded', function() {
             existingError.remove();
         }
 
-        selectTimeSlot(timeSlot, date, startTime, endTime);
+        selectTimeSlot(timeSlot, date, startTime, endTime, event);
     }
 
-    function selectTimeSlot(element, date, startTime, endTime) {
+    function selectTimeSlot(element, date, startTime, endTime, event) {
         // Prevent selection if slot is sold out
         if (element.closest('.sold-out')) {
             return;
         }
 
-        // Prevent event bubbling
-        event?.stopPropagation();
+        // Prevent event bubbling if event is provided
+        if (event) {
+            event.stopPropagation();
+        }
+
+        // Find and select the radio button
+        const radioButton = element.querySelector('input[type="radio"]');
+        if (radioButton) {
+            radioButton.checked = true;
+            // Trigger the change event manually
+            const changeEvent = new Event('change', { bubbles: true });
+            radioButton.dispatchEvent(changeEvent);
+        }
 
         // Remove selected class from all time slots
         document.querySelectorAll('.time-slot').forEach(slot => {
@@ -1160,6 +1226,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 slot.style.width = '100%';
                 slot.style.marginLeft = '';
                 slot.style.marginRight = '';
+                slot.style.backgroundColor = '';
+                slot.style.borderColor = '';
+                slot.style.color = '';
             }
         });
 
@@ -1206,6 +1275,8 @@ document.addEventListener('DOMContentLoaded', function() {
         element.style.backgroundColor = 'rgba(255, 0, 127, 0.15)';
         element.style.borderColor = '#ff007f';
         element.style.color = '#ff007f';
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
 
         // Add success sound if available
         const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
@@ -1246,6 +1317,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
         }, 3000);
     }
+
+    // Add hover event listeners to all time slots
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add hover event listener to time slots container
+        const timeSlotsContainer = document.getElementById('time-slots');
+        if (timeSlotsContainer) {
+            timeSlotsContainer.addEventListener('mouseover', function(event) {
+                const timeSlot = event.target.closest('.time-slot');
+                if (timeSlot && !timeSlot.classList.contains('sold-out')) {
+                    const radioButton = timeSlot.querySelector('input[type="radio"]');
+                    if (radioButton && !radioButton.checked) {
+                        const date = radioButton.getAttribute('data-date');
+                        const startTime = radioButton.getAttribute('data-start');
+                        const endTime = radioButton.getAttribute('data-end');
+                        selectTimeSlot(timeSlot, date, startTime, endTime, event);
+                    }
+                }
+            });
+        }
+    });
 
     // Initialize with today's date and default studio
     const defaultStudio = document.querySelector('select[name="studio"]').value;
@@ -1294,60 +1385,108 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function validateForm() {
     let isValid = true;
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
-    const studio = document.getElementById('studio').value;
+    const name = document.getElementById('name');
+    const phone = document.getElementById('phone');
+    const email = document.getElementById('email');
+    const studio = document.getElementById('studio');
     const timeSlot = document.querySelector('input[name="time_slot"]:checked');
 
     // Reset error messages
     document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
 
-    // Validate name
-    if (!name.trim()) {
-        document.getElementById('nameError').textContent = 'Please enter your name';
-        document.getElementById('nameError').style.display = 'block';
+    // Function to scroll to element and add vibration
+    function showError(element, errorMessage) {
+        // Scroll to the element
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Add vibration if supported
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]); // Vibrate pattern: vibrate, pause, vibrate
+        }
+
+        // Add visual feedback
+        element.style.borderColor = '#dc3545';
+        element.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+        
+        // Add shake animation
+        element.classList.add('animate__animated', 'animate__shakeX');
+        setTimeout(() => {
+            element.classList.remove('animate__animated', 'animate__shakeX');
+        }, 1000);
+
+        // Show error message
+        const errorElement = document.getElementById(element.id + 'Error');
+        if (errorElement) {
+            errorElement.textContent = errorMessage;
+            errorElement.style.display = 'block';
+        }
+
         isValid = false;
+    }
+
+    // Validate name
+    if (!name.value.trim()) {
+        showError(name, 'Please enter your name');
+    } else {
+        name.style.borderColor = '';
+        name.style.boxShadow = '';
     }
 
     // Validate phone
-    if (!phone.trim()) {
-        document.getElementById('phoneError').textContent = 'Please enter your phone number';
-        document.getElementById('phoneError').style.display = 'block';
-        isValid = false;
-    } else if (!/^\d{10}$/.test(phone)) {
-        document.getElementById('phoneError').textContent = 'Please enter a valid 10-digit phone number';
-        document.getElementById('phoneError').style.display = 'block';
-        isValid = false;
+    if (!phone.value.trim()) {
+        showError(phone, 'Please enter your phone number');
+    } else if (!/^\d{10}$/.test(phone.value)) {
+        showError(phone, 'Please enter a valid 10-digit phone number');
+    } else {
+        phone.style.borderColor = '';
+        phone.style.boxShadow = '';
     }
 
     // Validate email
-    if (!email.trim()) {
-        document.getElementById('emailError').textContent = 'Please enter your email';
-        document.getElementById('emailError').style.display = 'block';
-        isValid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        document.getElementById('emailError').textContent = 'Please enter a valid email address';
-        document.getElementById('emailError').style.display = 'block';
-        isValid = false;
+    if (!email.value.trim()) {
+        showError(email, 'Please enter your email');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        showError(email, 'Please enter a valid email address');
+    } else {
+        email.style.borderColor = '';
+        email.style.boxShadow = '';
     }
 
     // Validate studio
-    if (!studio) {
-        document.getElementById('studioError').textContent = 'Please select a studio';
-        document.getElementById('studioError').style.display = 'block';
-        isValid = false;
+    if (!studio.value) {
+        showError(studio, 'Please select a studio');
+    } else {
+        studio.style.borderColor = '';
+        studio.style.boxShadow = '';
     }
 
     // Validate date and time selection
     if (!timeSlot) {
+        const timeSlotsContainer = document.getElementById('time-slots');
+        timeSlotsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
         const timeSlotError = document.createElement('div');
-        timeSlotError.className = 'error-message';
+        timeSlotError.className = 'error-message animate__animated animate__shakeX';
         timeSlotError.id = 'timeSlotError';
         timeSlotError.textContent = 'Please select a date and time slot';
         timeSlotError.style.display = 'block';
+        timeSlotError.style.color = '#dc3545';
+        timeSlotError.style.marginTop = '10px';
+        timeSlotError.style.padding = '10px';
+        timeSlotError.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
+        timeSlotError.style.borderRadius = '8px';
+        timeSlotError.style.border = '1px solid rgba(220, 53, 69, 0.2)';
+        
         document.getElementById('time-slots').appendChild(timeSlotError);
         isValid = false;
+
+        setTimeout(() => {
+            timeSlotError.classList.remove('animate__animated', 'animate__shakeX');
+        }, 1000);
     }
 
     if (isValid) {
@@ -1391,14 +1530,14 @@ function validateForm() {
 
         // Create form data
         const formData = new FormData();
-        formData.append('name', name);
-        formData.append('phone', phone);
-        formData.append('email', email);
-        formData.append('studio', studio);
+        formData.append('name', name.value);
+        formData.append('phone', phone.value);
+        formData.append('email', email.value);
+        formData.append('studio', studio.value);
         formData.append('booking_date', formattedDate);
         formData.append('booking_time', `${startTime}-${endTime}`);
         formData.append('formatted_date_time', `${formattedDate} | ${startTime}-${endTime}`);
-        formData.append('payment_url', paymentUrls[studio]);
+        formData.append('payment_url', paymentUrls[studio.value]);
 
         // Submit form using fetch
         fetch('/register/process', {
@@ -1464,6 +1603,24 @@ function validateForm() {
 
     return false;
 }
+
+// Add input event listeners to clear error styling when user starts typing
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = ['name', 'phone', 'email', 'studio'];
+    inputs.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('input', function() {
+                this.style.borderColor = '';
+                this.style.boxShadow = '';
+                const errorElement = document.getElementById(this.id + 'Error');
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            });
+        }
+    });
+});
 
 </script>
 

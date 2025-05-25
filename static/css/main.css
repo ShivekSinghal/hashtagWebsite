@@ -186,7 +186,12 @@ h6 {
 /* Desktop Navigation */
 @media (min-width: 1200px) {
   .navmenu {
+    margin: 0;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
   }
 
   .navmenu ul {
@@ -199,27 +204,20 @@ h6 {
 
   .navmenu li {
     position: relative;
-  }
-
-  .navmenu>ul>li {
     white-space: nowrap;
-    padding: 15px 14px;
-  }
-
-  .navmenu>ul>li:last-child {
-    padding-right: 0;
+    padding: 10px 0 10px 28px;
   }
 
   .navmenu a,
   .navmenu a:focus {
-    color: color-mix(in srgb, var(--nav-color), transparent 20%);
-    font-size: 15px;
-    padding: 0 2px;
-    font-family: var(--nav-font);
-    font-weight: 400;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 3px;
+    font-family: var(--nav-font);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--nav-color);
     white-space: nowrap;
     transition: 0.3s;
     position: relative;
@@ -794,14 +792,27 @@ section,
   align-items: center;
 }
 
-.hero .hero-bg {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
+.hero .container {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero .hero-content {
+  flex: 1;
+  padding-right: 30px;
+}
+
+.hero .hero-img {
+  flex: 1;
+  text-align: right;
+}
+
+.hero .hero-img img {
+  max-width: 100%;
+  height: auto;
 }
 
 .hero:before {
@@ -810,11 +821,6 @@ section,
   position: absolute;
   inset: 0;
   z-index: 2;
-}
-
-.hero .container {
-  position: relative;
-  z-index: 3;
 }
 
 .container-fluid {
@@ -911,21 +917,19 @@ section,
   animation: up-down 2s ease-in-out infinite alternate-reverse both;
 }
 
-@media (max-width: 640px) {
-  .hero h1 {
-    font-size: 28px;
-    line-height: 36px;
+@media (max-width: 768px) {
+  .hero .container {
+    flex-direction: column;
   }
-
-  .hero p {
-    font-size: 18px;
-    line-height: 24px;
+  
+  .hero .hero-content {
+    padding-right: 0;
     margin-bottom: 30px;
+    text-align: center;
   }
-
-  .hero .btn-get-started,
-  .hero .btn-watch-video {
-    font-size: 13px;
+  
+  .hero .hero-img {
+    text-align: center;
   }
 }
 

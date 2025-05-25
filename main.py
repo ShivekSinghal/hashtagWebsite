@@ -9,6 +9,7 @@ import hmac
 import hashlib
 
 
+
 app = Flask(__name__)
 
 # Razorpay webhook secret - store this securely in environment variables
@@ -279,6 +280,7 @@ def razorpay_webhook():
             payment_id = payment['id']
             amount = payment['amount'] / 100  # Convert from paise to rupees
             currency = payment['currency']
+            
             status = payment['status']
             method = payment['method']
             email = payment['email']
