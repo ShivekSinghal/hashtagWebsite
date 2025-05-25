@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>Book A Class</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -8,6 +9,22 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '409191551493076');
+        fbq('track', 'PageView');
+        </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=409191551493076&ev=PageView&noscript=1"
+    /></noscript>
+
     <style>
         body {
             background-color: #000000;
@@ -580,6 +597,15 @@
             color: #ff007f !important;
             font-weight: 600 !important;
         }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -915,6 +941,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 { start: '17:15', end: '18:30', label: '5:15 PM - 6:30 PM', isHeelsClass: true }
             ]
         },
+        'Pitampura': {
+            'Monday': [
+                { start: '17:15', end: '18:15', label: '5:15 PM - 6:15 PM', isKidsClass: true }
+            ],
+
+            'Tuesday': [
+                { start: '17:00', end: '18:00', label: '5:00 PM - 6:00 PM', isKidsClass: true },
+                { start: '19:30', end: '20:45', label: '7:30 PM - 8:45 PM' }
+
+            ],
+
+            'Friday': [
+                { start: '17:00', end: '18:00', label: '5:00 PM - 6:00 PM', isKidsClass: true },
+                { start: '19:30', end: '20:45', label: '7:30 PM - 8:45 PM' }
+            ],
+            'Sunday': [
+                { start: '13:30', end: '16:00', label: '1:30 PM - 4:00 PM', isPremiumClass: true },
+                { start: '16:00', end: '17:15', label: '4:00 PM - 5:15 PM' },
+                { start: '17:15', end: '18:30', label: '5:15 PM - 6:30 PM', isHeelsClass: true }
+            ]
+        },
+
+
         'Ramgya': {
             'Monday': [
                 { start: '18:45', end: '19:45', label: '6:45 PM - 7:45 PM', isKidsClass: true },
@@ -1620,6 +1669,52 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+});
+
+// Add validation function
+function validateTimeSlotSelection() {
+    const selectedTimeSlot = document.querySelector('.time-slot.selected');
+    if (!selectedTimeSlot) {
+        // Vibrate all time slots
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            if (!slot.closest('.sold-out')) {
+                slot.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    slot.style.animation = '';
+                }, 500);
+            }
+        });
+
+        // Add haptic feedback if available
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        // Show error message
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'timeSlotError';
+        errorDiv.style.color = '#ff007f';
+        errorDiv.style.textAlign = 'center';
+        errorDiv.style.marginTop = '10px';
+        errorDiv.style.fontWeight = 'bold';
+        errorDiv.style.animation = 'fadeIn 0.3s ease-in-out';
+        errorDiv.innerHTML = 'Please click on the circle to select a time slot';
+        
+        const timeSlotsContainer = document.querySelector('.time-slots');
+        if (timeSlotsContainer) {
+            timeSlotsContainer.appendChild(errorDiv);
+        }
+
+        return false;
+    }
+    return true;
+}
+
+// Add form submission handler
+document.querySelector('form').addEventListener('submit', function(e) {
+    if (!validateTimeSlotSelection()) {
+        e.preventDefault();
+    }
 });
 
 </script>

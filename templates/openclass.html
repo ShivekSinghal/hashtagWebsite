@@ -619,5 +619,155 @@ src="https://www.facebook.com/tr?id=409191551493076&ev=PageView&noscript=1"
   <!-- Main JS File -->
   <script src="../static/js/main.js"></script>
 
+  <script>
+  function selectTimeSlot(element, date, startTime, endTime, event) {
+    // Prevent selection if slot is sold out
+    if (element.closest('.sold-out')) {
+        return;
+    }
+
+    // Prevent event bubbling if event is provided
+    if (event) {
+        event.stopPropagation();
+    }
+
+    // Find and select the radio button
+    const radioButton = element.querySelector('input[type="radio"]');
+    if (radioButton) {
+        radioButton.checked = true;
+        // Trigger the change event manually
+        const changeEvent = new Event('change', { bubbles: true });
+        radioButton.dispatchEvent(changeEvent);
+    }
+
+    // Remove selected class from all time slots
+    document.querySelectorAll('.time-slot').forEach(slot => {
+        if (slot !== element) {
+            slot.classList.remove('selected');
+            slot.style.transform = '';
+            slot.style.boxShadow = '';
+            slot.style.width = '100%';
+            slot.style.marginLeft = '';
+            slot.style.marginRight = '';
+            slot.style.backgroundColor = '';
+            slot.style.borderColor = '';
+            slot.style.color = '';
+        }
+    });
+
+    // Add selected class to clicked time slot
+    element.classList.add('selected');
+
+    // Store the selected values
+    const selectedDate = new Date(date);
+    const formattedDate = selectedDate.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    // Store values in data attributes
+    element.setAttribute('data-selected-start', startTime);
+    element.setAttribute('data-selected-end', endTime);
+    element.setAttribute('data-selected-date', date);
+    element.setAttribute('data-formatted-date', formattedDate);
+
+    // Store booking data in hidden form fields
+    document.getElementById('booking_date').value = formattedDate;
+    document.getElementById('booking_time').value = `${startTime}-${endTime}`;
+    document.getElementById('formatted_date_time').value = `${formattedDate} | ${startTime}-${endTime}`;
+
+    // Remove any existing time slot error message
+    const existingError = document.getElementById('timeSlotError');
+    if (existingError) {
+        existingError.remove();
+    }
+
+    // Add haptic feedback if available
+    if (navigator.vibrate) {
+        navigator.vibrate(50);
+    }
+
+    // Add visual feedback
+    element.style.transform = 'scale(1.02)';
+    element.style.boxShadow = '0 8px 25px rgba(255, 0, 127, 0.2)';
+    element.style.width = '60%';
+    element.style.marginLeft = 'auto';
+    element.style.marginRight = 'auto';
+    element.style.backgroundColor = 'rgba(255, 0, 127, 0.15)';
+    element.style.borderColor = '#ff007f';
+    element.style.color = '#ff007f';
+    element.style.position = 'relative';
+    element.style.overflow = 'hidden';
+
+    // Add success sound if available
+    const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+    audio.play().catch(() => {}); // Ignore errors if audio is not supported
+  }
+
+  // Add this new function to handle form submission
+  function validateTimeSlotSelection() {
+    const selectedTimeSlot = document.querySelector('.time-slot.selected');
+    if (!selectedTimeSlot) {
+        // Vibrate all time slots
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            if (!slot.closest('.sold-out')) {
+                slot.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    slot.style.animation = '';
+                }, 500);
+            }
+        });
+
+        // Add haptic feedback if available
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+
+        // Show error message
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'timeSlotError';
+        errorDiv.style.color = '#ff007f';
+        errorDiv.style.textAlign = 'center';
+        errorDiv.style.marginTop = '10px';
+        errorDiv.style.fontWeight = 'bold';
+        errorDiv.style.animation = 'fadeIn 0.3s ease-in-out';
+        errorDiv.innerHTML = 'Please click on the circle to select a time slot';
+        
+        const timeSlotsContainer = document.querySelector('.time-slots');
+        if (timeSlotsContainer) {
+            timeSlotsContainer.appendChild(errorDiv);
+        }
+
+        return false;
+    }
+    return true;
+  }
+
+  // Add these styles to your existing CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Add this to your form submission handler
+  document.querySelector('form').addEventListener('submit', function(e) {
+    if (!validateTimeSlotSelection()) {
+        e.preventDefault();
+    }
+  });
+  </script>
+
 </body>
 </html>
