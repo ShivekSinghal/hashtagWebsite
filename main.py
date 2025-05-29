@@ -165,6 +165,7 @@ def register_process():
         booking_date = request.form.get('booking_date')
         booking_time = request.form.get('booking_time')
         formatted_date_time = request.form.get('formatted_date_time')
+        package = request.form.get('package')
 
         # Debug logging for time difference
         print(f"Debug - Booking time: {booking_time}")
@@ -215,7 +216,8 @@ def register_process():
             studio,    # Studio
             formatted_date_time,  # Formatted Date and Time
             booking_time,  # Time Slot
-            'Pending'  # Status
+            'Pending',  # Status
+            package    # Package Type
         ]
 
         try:
@@ -229,7 +231,8 @@ def register_process():
                 'name': name,
                 'studio': studio,
                 'booking_date': booking_date,
-                'booking_time': booking_time
+                'booking_time': booking_time,
+                'package': package
             }
             
             # Send Lead event
