@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+{% block title %}Open Class - Hashtag{% endblock %}
 
-  <title>Hashtag</title>
+{% block head %}
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -183,10 +180,9 @@
   }
 </style>
 
-</head>
+{% endblock %}
 
-<body class="index-page">
-
+{% block content %}
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container position-relative d-flex align-items-center justify-content-between" style="height: 60px;">
 
@@ -769,5 +765,18 @@ src="https://www.facebook.com/tr?id=409191551493076&ev=PageView&noscript=1"
   });
   </script>
 
-</body>
-</html>
+  <script>
+  // Track open class registration
+  document.addEventListener('DOMContentLoaded', function() {
+    const openClassForm = document.querySelector('form');
+    if (openClassForm) {
+      openClassForm.addEventListener('submit', function() {
+        fbq('track', 'CompleteRegistration', {
+          content_name: 'Open Class Registration'
+        });
+      });
+    }
+  });
+  </script>
+
+{% endblock %}

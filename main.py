@@ -7,10 +7,59 @@ import re
 import json
 import hmac
 import hashlib
-
-
+from facebook_business.api import FacebookAdsApi
+from facebook_business.adobjects.user import User
+from facebook_business.adobjects.customaudience import CustomAudience
 
 app = Flask(__name__)
+
+# Meta Pixel Configuration
+META_ACCESS_TOKEN = os.getenv('META_ACCESS_TOKEN')
+META_PIXEL_ID = os.getenv('META_PIXEL_ID')
+META_APP_ID = os.getenv('META_APP_ID')
+META_APP_SECRET = os.getenv('META_APP_SECRET')
+
+# Initialize Facebook API
+if all([META_ACCESS_TOKEN, META_APP_ID, META_APP_SECRET]):
+    FacebookAdsApi.init(META_APP_ID, META_APP_SECRET, META_ACCESS_TOKEN)
+
+def send_meta_pixel_event(event_name, user_data):
+    """
+    Send event to Meta Pixel Conversions API
+    """
+    if not all([META_ACCESS_TOKEN, META_PIXEL_ID]):
+        print("Meta Pixel configuration missing")
+        return False
+
+    try:
+        api = FacebookAdsApi.init(META_ACCESS_TOKEN)
+        user = User(fbid='me')
+        
+        # Prepare the event data
+        event_data = {
+            'data': [{
+                'event_name': event_name,
+                'test_event_code': 'TEST91460',
+                'event_time': int(datetime.now().timestamp()),
+                'user_data': {
+                    'em': [hashlib.sha256(user_data.get('email', '').lower().encode()).hexdigest()],
+                    'ph': [hashlib.sha256(user_data.get('phone', '').encode()).hexdigest()],
+                },
+                'action_source': 'website'
+            }]
+        }
+
+        # Send the event
+        user.create_custom_audience(
+            name=f"{event_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            subtype=CustomAudience.Subtype.custom,
+            description=f"Event: {event_name}",
+            data=event_data
+        )
+        return True
+    except Exception as e:
+        print(f"Error sending Meta Pixel event: {str(e)}")
+        return False
 
 # Razorpay webhook secret - store this securely in environment variables
 RAZORPAY_WEBHOOK_SECRET = os.getenv('RAZORPAY_WEBHOOK_SECRET', 'your_webhook_secret')
@@ -172,6 +221,24 @@ def register_process():
         try:
             # Append data to Google Sheets
             SHEET.append_row(data)
+            
+            # Send event to Meta Pixel
+            user_data = {
+                'email': email,
+                'phone': phone,
+                'name': name,
+                'studio': studio,
+                'booking_date': booking_date,
+                'booking_time': booking_time
+            }
+            
+            # Send Lead event
+            send_meta_pixel_event('Lead', user_data)
+            
+            # If it's a premium booking, send a separate event
+            if is_more_than_2_hours:
+                send_meta_pixel_event('PremiumBooking', user_data)
+            
         except Exception as e:
             print(f"Error appending to Google Sheets: {str(e)}")
             return jsonify({'error': 'Failed to save registration data'}), 500
