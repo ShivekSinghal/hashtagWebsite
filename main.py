@@ -8,55 +8,71 @@ import json
 import hmac
 import hashlib
 from facebook_business.api import FacebookAdsApi
+import requests
+
 from facebook_business.adobjects.user import User
 from facebook_business.adobjects.customaudience import CustomAudience
 
 app = Flask(__name__)
 
 # Meta Pixel Configuration
-META_ACCESS_TOKEN = os.getenv('META_ACCESS_TOKEN')
-META_PIXEL_ID = os.getenv('META_PIXEL_ID')
-META_APP_ID = os.getenv('META_APP_ID')
-META_APP_SECRET = os.getenv('META_APP_SECRET')
+META_ACCESS_TOKEN = os.getenv('EAAIb1ZBLBZBHYBO3Et76tMRLHEyWaIAqEZBErronaMeU5HFdm15dViwhGJxPLzYwJqoOFsDUAiZCU1vcBzvYAu0Oy58YgBjqPSjs4iTKKZB11z7hGnn8ZChBP5yHg2HoAInB3vgP014hSnaznk5IKFGms1qU37uZA54j8QpOEOFydZAxVwYeZCyYbTMaqZBKA8mZBqOiwZDZD')
+META_PIXEL_ID = os.getenv('409191551493076')
+META_APP_ID = os.getenv('1834438770468634')
+META_APP_SECRET = os.getenv('6e463b032dd6468cb018f76ef5e2b288')
 
 # Initialize Facebook API
 if all([META_ACCESS_TOKEN, META_APP_ID, META_APP_SECRET]):
     FacebookAdsApi.init(META_APP_ID, META_APP_SECRET, META_ACCESS_TOKEN)
 
+
 def send_meta_pixel_event(event_name, user_data):
     """
-    Send event to Meta Pixel Conversions API
+    Sends server-side event to Meta Conversion API using HTTP request
     """
     if not all([META_ACCESS_TOKEN, META_PIXEL_ID]):
-        print("Meta Pixel configuration missing")
+        print("Meta Pixel configuration missing.")
         return False
 
     try:
-        api = FacebookAdsApi.init(META_ACCESS_TOKEN)
-        user = User(fbid='me')
-        
-        # Prepare the event data
-        event_data = {
-            'data': [{
-                'event_name': event_name,
-                'test_event_code': 'TEST91460',
-                'event_time': int(datetime.now().timestamp()),
-                'user_data': {
-                    'em': [hashlib.sha256(user_data.get('email', '').lower().encode()).hexdigest()],
-                    'ph': [hashlib.sha256(user_data.get('phone', '').encode()).hexdigest()],
-                },
-                'action_source': 'website'
-            }]
+        # Prepare user data (hashed)
+        email = user_data.get('email', '').strip().lower()
+        phone = user_data.get('phone', '').strip()
+
+        hashed_email = hashlib.sha256(email.encode()).hexdigest() if email else None
+        hashed_phone = hashlib.sha256(phone.encode()).hexdigest() if phone else None
+
+        payload = {
+            "data": [
+                {
+                    "event_name": event_name,
+                    "event_time": int(datetime.now().timestamp()),
+                    "action_source": "website",
+                    "user_data": {
+                        "em": [hashed_email] if hashed_email else [],
+                        "ph": [hashed_phone] if hashed_phone else []
+                    },
+                    "custom_data": {
+                        "name": user_data.get('name'),
+                        "studio": user_data.get('studio'),
+                        "booking_date": user_data.get('booking_date'),
+                        "booking_time": user_data.get('booking_time'),
+                        "package": user_data.get('package')
+                    }
+                }
+            ]
         }
 
-        # Send the event
-        user.create_custom_audience(
-            name=f"{event_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-            subtype=CustomAudience.Subtype.custom,
-            description=f"Event: {event_name}",
-            data=event_data
+        response = requests.post(
+            f'https://graph.facebook.com/v19.0/{META_PIXEL_ID}/events',
+            params={'access_token': META_ACCESS_TOKEN},
+            headers={'Content-Type': 'application/json'},
+            data=json.dumps(payload)
         )
-        return True
+
+        print("Meta API Response:", response.status_code, response.text)
+        return response.status_code == 200
+
     except Exception as e:
         print(f"Error sending Meta Pixel event: {str(e)}")
         return False
