@@ -772,26 +772,13 @@ document.addEventListener('DOMContentLoaded', function() {
             right: 'today'
         },
         dateClick: function(info) {
-            // Check if the clicked date is in the past or in the sold out period
             const clickedDate = new Date(info.dateStr);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            // Check if date is in sold out period (after June 15th, 2025)
-            const soldOutDate = new Date('2025-06-15');
-
-            if (clickedDate < today || clickedDate > soldOutDate) {
-                // Show sold out message
-                const timeSlotsContainer = document.getElementById('time-slots');
-                timeSlotsContainer.innerHTML = `
-                    <div class="no-slots-message" style="text-align: center; padding: 20px; color: #666;">
-                        <i class="fas fa-calendar-times" style="font-size: 2em; margin-bottom: 10px; color: #ff007f;"></i>
-                        <p style="font-weight: 500; color: #333;">Slots Sold Out</p>
-                        <p style="font-size: 0.9em; margin-top: 5px;">Please select another date</p>
-                    </div>
-                `;
-                return;
-            }
+            // Sold out period: 21st July 2024 to 3rd August 2024 (inclusive)
+            const soldOutStart = new Date('2024-07-21');
+            const soldOutEnd = new Date('2024-08-03');
 
             const selectedStudio = document.querySelector('select[name="studio"]').value;
             if (selectedStudio) {
@@ -804,7 +791,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 noStudioDiv.style.padding = '20px';
                 noStudioDiv.style.color = '#666';
                 noStudioDiv.innerHTML = `
-                    <i class="fas fa-exclamation-circle" style="font-size: 2em; margin-bottom: 10px;"></i>
+                    <i class=\"fas fa-exclamation-circle\" style=\"font-size: 2em; margin-bottom: 10px;\"></i>
                     <p>Please select a studio first</p>
                 `;
                 document.getElementById('time-slots').innerHTML = '';
@@ -814,16 +801,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 day.classList.remove('fc-day-selected');
             });
             info.dayEl.classList.add('fc-day-selected');
+
+            // If the date is in the past or sold out, show a message
+            if (clickedDate < today || (clickedDate >= soldOutStart && clickedDate <= soldOutEnd)) {
+                const timeSlotsContainer = document.getElementById('time-slots');
+                timeSlotsContainer.innerHTML = `
+                    <div class=\"no-slots-message\" style=\"text-align: center; padding: 20px; color: #666;\">\n                        <i class=\"fas fa-calendar-times\" style=\"font-size: 2em; margin-bottom: 10px; color: #ff007f;\"></i>\n                        <p style=\"font-weight: 500; color: #333;\">No slots available for this date</p>\n                        <p style=\"font-size: 0.9em; margin-top: 5px;\">Please select another date</p>\n                    </div>
+                `;
+            }
         },
         dayCellDidMount: function(info) {
             const date = info.date;
-            const soldOutStart = new Date('2024-06-15');
-            const soldOutEnd = new Date('2024-07-06');
+            // Sold out period: 21st July 2024 to 3rd August 2024 (inclusive)
+            const soldOutStart = new Date('2024-07-21');
+            const soldOutEnd = new Date('2024-08-03');
 
             if (date >= soldOutStart && date <= soldOutEnd) {
                 info.el.classList.add('fc-day-sold-out');
-                info.el.style.pointerEvents = 'none';
-
+                info.el.style.pointerEvents = '';
                 // Add sold out indicator
                 const dayNumber = info.el.querySelector('.fc-daygrid-day-number');
                 if (dayNumber) {
