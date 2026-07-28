@@ -7,19 +7,23 @@ import re
 import json
 import hmac
 import hashlib
+from dotenv import load_dotenv
 from facebook_business.api import FacebookAdsApi
 import requests
 
 from facebook_business.adobjects.user import User
 from facebook_business.adobjects.customaudience import CustomAudience
 
+load_dotenv()
+
 app = Flask(__name__)
 
 # Meta Pixel Configuration
-META_ACCESS_TOKEN = os.getenv('EAAIb1ZBLBZBHYBO3Et76tMRLHEyWaIAqEZBErronaMeU5HFdm15dViwhGJxPLzYwJqoOFsDUAiZCU1vcBzvYAu0Oy58YgBjqPSjs4iTKKZB11z7hGnn8ZChBP5yHg2HoAInB3vgP014hSnaznk5IKFGms1qU37uZA54j8QpOEOFydZAxVwYeZCyYbTMaqZBKA8mZBqOiwZDZD')
-META_PIXEL_ID = os.getenv('409191551493076')
-META_APP_ID = os.getenv('1834438770468634')
-META_APP_SECRET = os.getenv('6e463b032dd6468cb018f76ef5e2b288')
+DEFAULT_META_PIXEL_ID = '409191551493076'
+META_ACCESS_TOKEN = os.getenv('META_ACCESS_TOKEN')
+META_PIXEL_ID = os.getenv('META_PIXEL_ID', DEFAULT_META_PIXEL_ID)
+META_APP_ID = os.getenv('META_APP_ID')
+META_APP_SECRET = os.getenv('META_APP_SECRET')
 
 # Initialize Facebook API
 if all([META_ACCESS_TOKEN, META_APP_ID, META_APP_SECRET]):
@@ -48,6 +52,7 @@ def send_meta_pixel_event(event_name, user_data):
                     "event_name": event_name,
                     "event_time": int(datetime.now().timestamp()),
                     "action_source": "website",
+                    "event_source_url": request.host_url.rstrip('/'),
                     "user_data": {
                         "em": [hashed_email] if hashed_email else [],
                         "ph": [hashed_phone] if hashed_phone else []
@@ -76,6 +81,18 @@ def send_meta_pixel_event(event_name, user_data):
     except Exception as e:
         print(f"Error sending Meta Pixel event: {str(e)}")
         return False
+
+
+def track_registration_lead(name, phone, email, studio, **extra_data):
+    user_data = {
+        'email': email,
+        'phone': phone,
+        'name': name,
+        'studio': studio,
+        **extra_data
+    }
+
+    return send_meta_pixel_event('Lead', user_data)
 
 # Razorpay webhook secret - store this securely in environment variables
 RAZORPAY_WEBHOOK_SECRET = os.getenv('RAZORPAY_WEBHOOK_SECRET', 'your_webhook_secret')
@@ -241,6 +258,7 @@ def register_process():
             SHEET.append_row(data)
             
             # Send event to Meta Pixel
+            # Send Lead event
             user_data = {
                 'email': email,
                 'phone': phone,
@@ -250,9 +268,15 @@ def register_process():
                 'booking_time': booking_time,
                 'package': package
             }
-            
-            # Send Lead event
-            send_meta_pixel_event('Lead', user_data)
+            track_registration_lead(
+                name,
+                phone,
+                email,
+                studio,
+                booking_date=booking_date,
+                booking_time=booking_time,
+                package=package
+            )
             
             # If it's a premium booking, send a separate event
             if is_more_than_2_hours:
@@ -283,6 +307,7 @@ def register_openclass():
         print(name, phone, email, studio)
         # Save data to Google Sheet with timestamp
         SHEET.append_row([timestamp, name, phone, email, studio])  # ⬅️ Add timestamp as first colum
+        track_registration_lead(name, phone, email, studio, form_type='openclass')
 
         # Optional: Save to DB or do something with the data here
 
@@ -306,6 +331,7 @@ def register_hashtag():
         print(name, phone, email, studio)
         # Save data to Google Sheet with timestamp
         SHEET.append_row([timestamp, name, phone, email, studio])  # ⬅️ Add timestamp as first column
+        track_registration_lead(name, phone, email, studio, form_type='sixmonths')
 
         # Optional: Save to DB or do something with the data here
 
@@ -406,5 +432,3 @@ def razorpay_webhook():
 
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
-
-
