@@ -166,6 +166,55 @@
     box-shadow: none;
   }
 
+  .hero-video-cover,
+  .hero-video-frame {
+    width: 100%;
+    max-width: 408px;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+  }
+
+  .hero-video-cover {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background:
+      radial-gradient(circle at 22% 20%, rgba(255, 0, 127, 0.28), transparent 34%),
+      linear-gradient(135deg, #070707 0%, #151515 58%, #2a0016 100%);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(255, 0, 127, 0.18);
+    color: #ffffff;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 24px;
+    position: relative;
+  }
+
+  .hero-video-cover img {
+    max-width: 78%;
+    height: auto;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.42));
+  }
+
+  .hero-video-cover span {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 999px;
+    bottom: 18px;
+    color: #111111;
+    display: inline-flex;
+    font-weight: 700;
+    gap: 8px;
+    left: 50%;
+    line-height: 1;
+    padding: 10px 14px;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+
+  .hero-video-frame {
+    display: block;
+  }
+
   @media (max-width: 768px) {
     #iframeContainer {
       height: 100vh;
@@ -173,7 +222,8 @@
       width: 100%;
     }
 
-    .hero-img iframe {
+    .hero-video-cover,
+    .hero-video-frame {
       width: 100%;
       height: auto;
       aspect-ratio: 16/9;
@@ -255,7 +305,10 @@
         <div class="row gy-4 justify-content-between">
           <div style="justify-content:center;align-items:center;display: flex;" class="col-lg-4 order-lg-last hero-img" data-aos="zoom-out" data-aos-delay="100">
             <div></div>
-            <iframe width="408" height="240" src="https://www.youtube.com/embed/h7qtzf0EL6c?si=fzyzHOCEJMyaY0Nw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <button class="hero-video-cover" type="button" data-video-id="h7qtzf0EL6c" aria-label="Play Hashtag Dance Studio video">
+              <img src="../static/img/hashtaglogo.png" alt="Hashtag Dance Studio">
+              <span><i class="bi bi-play-fill"></i> Watch video</span>
+            </button>
           </div>
 
           <div class="col-lg-6  d-flex flex-column justify-content-center" data-aos="fade-in">
@@ -263,7 +316,7 @@
             <p></p>
             <div class="d-flex">
               <a href="#" class="cta-btn" id="main-btn" onclick="openIframe()">Get Started</a>
-              <a href="https://www.youtube.com/watch?v=h7qtzf0EL6c" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+              <a href="#hero" class="btn-watch-video d-flex align-items-center" data-play-hero-video><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
             </div>
           </div>
 
@@ -687,6 +740,28 @@
   function closeIframe() {
     document.getElementById("iframeModal").style.display = "none";
   }
+
+  document.querySelectorAll('.hero-video-cover').forEach((cover) => {
+    cover.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.className = 'hero-video-frame';
+      iframe.width = '408';
+      iframe.height = '240';
+      iframe.src = `https://www.youtube.com/embed/${cover.dataset.videoId}?autoplay=1`;
+      iframe.title = 'Hashtag Dance Studio video';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      cover.replaceWith(iframe);
+    });
+  });
+
+  document.querySelectorAll('[data-play-hero-video]').forEach((trigger) => {
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      document.querySelector('.hero-video-cover')?.click();
+    });
+  });
 </script>
   <script>
     !function(f,b,e,v,n,t,s)
